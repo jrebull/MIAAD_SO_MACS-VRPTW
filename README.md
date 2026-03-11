@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Escudo_UACJ_2015.svg/1200px-Escudo_UACJ_2015.svg.png" alt="UACJ" width="120"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Escudo_UACJ.svg/3840px-Escudo_UACJ.svg.png" alt="UACJ" width="120"/>
 </p>
 
 <h1 align="center">MACS-VRPTW</h1>
