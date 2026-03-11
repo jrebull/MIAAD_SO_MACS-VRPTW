@@ -4,7 +4,7 @@
 % Maestría en Inteligencia Artificial y Analítica de Datos (MIAAD)
 % Materia: Optimización Inteligente
 % Profesor: Mtro. Raúl Gibrán Porras Alaniz
-% Fecha de entrega: 16 de marzo de 2026
+% Fecha de entrega: 17 de marzo de 2026
 % =============================================================================
 
 \documentclass[12pt, letterpaper]{article}
@@ -13,6 +13,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[spanish]{babel}
+\decimalpoint
 
 % --- Fuente Helvetica (Arial-like) ---
 \usepackage[scaled=0.92]{helvet}
@@ -24,7 +25,8 @@
   top=2.5cm,
   bottom=2.5cm,
   left=2.5cm,
-  right=2.5cm
+  right=2.5cm,
+  headheight=14pt
 ]{geometry}
 
 % --- Paquetes esenciales ---
@@ -43,6 +45,7 @@
 \usepackage{titlesec}
 \usepackage{tabularx}
 \usepackage{parskip}
+\usepackage{microtype}
 
 % --- Colores institucionales UACJ ---
 \definecolor{azulUACJ}{HTML}{003366}
@@ -89,7 +92,7 @@
 \renewcommand{\footrule}{{\color{oroUACJ}\hrule width\headwidth height\footrulewidth \vskip-\footrulewidth}}
 
 % --- Ruta de figuras ---
-\graphicspath{{../Figures/}}
+\graphicspath{{Figures/}}
 
 % --- Configuración de captions ---
 \captionsetup{
@@ -108,7 +111,7 @@
 \begin{titlepage}
   \begin{center}
 
-    \vspace*{1cm}
+    \vspace*{0.3cm}
 
     % Placeholder para logo UACJ
     % Descomentar la siguiente línea cuando el archivo de logo exista:
@@ -132,7 +135,7 @@
 
     {\color{oroUACJ}\rule{0.6\textwidth}{1pt}}
 
-    \vspace{1.5cm}
+    \vspace{0.8cm}
 
     {\Huge\bfseries\color{azulUACJ}
       MACS-VRPTW}
@@ -143,35 +146,35 @@
       Sistema de Múltiples Colonias de Hormigas para el\\
       Problema de Ruteo de Vehículos con Ventanas de Tiempo}
 
-    \vspace{1.5cm}
+    \vspace{0.8cm}
 
     {\color{oroUACJ}\rule{0.6\textwidth}{1pt}}
 
-    \vspace{1cm}
+    \vspace{0.5cm}
 
-    {\large\bfseries\color{azulUACJ} Materia:}\\[0.3cm]
+    {\large\bfseries\color{azulUACJ} Materia:}\\[0.15cm]
     {\large Optimización Inteligente}
 
-    \vspace{0.8cm}
+    \vspace{0.5cm}
 
-    {\large\bfseries\color{azulUACJ} Profesor:}\\[0.3cm]
+    {\large\bfseries\color{azulUACJ} Profesor:}\\[0.15cm]
     {\large Mtro. Raúl Gibrán Porras Alaniz}
 
-    \vspace{0.8cm}
+    \vspace{0.5cm}
 
-    {\large\bfseries\color{azulUACJ} Integrantes:}\\[0.3cm]
+    {\large\bfseries\color{azulUACJ} Integrantes:}\\[0.15cm]
     {\large
-      Javier Augusto Rebull Saucedo (263483)\\[0.2cm]
-      Yazmín Ivonne Flores Martínez (261548)\\[0.2cm]
-      Esther Nohemí Encinas Guerrero (261536)
+      Esther Nohemí Encinas Guerrero (261536)\\[0.1cm]
+      Javier Augusto Rebull Saucedo (263483)\\[0.1cm]
+      Yazmín Ivonne Flores Martínez (261548)
     }
 
     \vfill
 
-    {\large\bfseries\color{azulUACJ} Fecha de entrega:}\\[0.3cm]
-    {\large 16 de marzo de 2026}
+    {\large\bfseries\color{azulUACJ} Fecha de entrega:}\\[0.15cm]
+    {\large 17 de marzo de 2026}
 
-    \vspace{0.5cm}
+    \vspace{0.3cm}
 
     {\color{azulUACJ}\rule{\textwidth}{2pt}}
 
@@ -181,17 +184,47 @@
 % --- Tabla de contenidos ---
 \newpage
 \tableofcontents
+
+% =============================================================================
+% GLOSARIO DE TÉRMINOS Y ACRÓNIMOS
+% =============================================================================
 \newpage
+\section*{Glosario de Términos y Acrónimos}
+\addcontentsline{toc}{section}{Glosario de Términos y Acrónimos}
+
+\begin{description}[style=nextline, leftmargin=2.5cm, font=\bfseries\color{azulUACJ}]
+  \item[ACO] \textit{Ant Colony Optimization}. Familia de metaheurísticas inspiradas en el comportamiento de colonias de hormigas.
+  \item[ACS] \textit{Ant Colony System}. Variante avanzada de ACO propuesta por Dorigo y Gambardella (1997).
+  \item[ACS-TIME] Colonia de hormigas del MACS-VRPTW encargada de minimizar la distancia total recorrida.
+  \item[ACS-VEI] Colonia de hormigas del MACS-VRPTW encargada de minimizar el número de vehículos.
+  \item[BKS] \textit{Best Known Solution}. Mejor solución conocida para una instancia de benchmark.
+  \item[CROSS] Operador de búsqueda local que intercambia segmentos entre pares de rutas.
+  \item[MACS-VRPTW] \textit{Multiple Ant Colony System for the Vehicle Routing Problem with Time Windows}. Algoritmo propuesto por Gambardella, Taillard y Agazzi (1999).
+  \item[NV] Número de vehículos utilizados en una solución.
+  \item[Or-opt] Operador de búsqueda local que reubica segmentos de 1, 2 o 3 clientes consecutivos.
+  \item[SOLID] Conjunto de principios de diseño de software orientado a objetos: \textit{Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion}.
+  \item[TD] \textit{Total Distance}. Distancia total recorrida por todos los vehículos en una solución.
+  \item[TW] \textit{Time Window}. Ventana de tiempo que define el intervalo $[e_i, l_i]$ durante el cual un cliente debe ser atendido.
+  \item[VRPTW] \textit{Vehicle Routing Problem with Time Windows}. Problema de ruteo de vehículos con restricciones de ventanas de tiempo.
+  \item[$\beta$] Peso de la información heurística en la regla de transición de estado.
+  \item[$\eta_{ij}$] Información heurística (atractivo) del arco $(i, j)$.
+  \item[$\rho$] Coeficiente de evaporación de feromonas.
+  \item[$\tau_{ij}$] Nivel de feromona en el arco $(i, j)$.
+  \item[$\tau_0$] Nivel inicial de feromona, calculado como $1/(n \cdot J^{nn})$.
+  \item[$\psi^{gb}$] Mejor solución global encontrada durante la ejecución del algoritmo.
+  \item[$q_0$] Probabilidad de explotación en la regla de transición de estado.
+\end{description}
 
 % =============================================================================
 % 1. INTRODUCCIÓN
 % =============================================================================
+\newpage
 \section{Introducción}
 \label{sec:introduccion}
 
 El \textit{Vehicle Routing Problem with Time Windows} (VRPTW) es uno de los problemas de optimización combinatoria más estudiados en el campo de la investigación de operaciones y la logística~\cite{solomon1987}. Este problema consiste en determinar un conjunto de rutas de costo mínimo para una flota de vehículos que deben atender a un grupo de clientes, cada uno con una demanda específica y una ventana de tiempo dentro de la cual debe ser servido. Todos los vehículos parten y regresan a un depósito central, respetando restricciones de capacidad y temporalidad~\cite{hasle2007}.
 
-Formalmente, el VRPTW se define sobre un grafo completo $G = (V, A)$, donde $V = \{0, 1, 2, \ldots, n\}$ es el conjunto de nodos (el nodo $0$ representa el depósito y los nodos $1, \ldots, n$ representan los clientes) y $A$ es el conjunto de arcos. Cada cliente $i$ tiene asociada una demanda $d_i$, una ventana de tiempo $[e_i, l_i]$ y un tiempo de servicio $s_i$. Cada vehículo tiene una capacidad máxima $Q$ y debe completar su ruta dentro de la ventana de tiempo del depósito $[e_0, l_0]$. El objetivo es minimizar simultáneamente el número de vehículos utilizados y la distancia total recorrida~\cite{gambardella1999}.
+Formalmente, el VRPTW se define sobre un grafo completo $G = (V, A)$, donde $V = \{0, 1, 2, \ldots, n\}$ es el conjunto de nodos (el nodo~$0$ representa el depósito y los nodos $1, \ldots, n$ representan los clientes) y $A$ es el conjunto de arcos. Cada cliente~$i$ tiene asociada una demanda~$d_i$, una ventana de tiempo~$[e_i, l_i]$ y un tiempo de servicio~$s_i$. Cada vehículo tiene capacidad máxima~$Q$ y debe completar su ruta dentro de la ventana de tiempo del depósito~$[e_0, l_0]$. El objetivo es minimizar simultáneamente el número de vehículos y la distancia total recorrida~\cite{gambardella1999}.
 
 Las metaheurísticas basadas en colonias de hormigas (\textit{Ant Colony Optimization}, ACO) han demostrado ser herramientas efectivas para abordar problemas de optimización combinatoria de tipo NP-difícil~\cite{dorigo1996}. Estas metaheurísticas se inspiran en el comportamiento colectivo de las hormigas reales, las cuales depositan feromona en los caminos que recorren, creando un mecanismo de comunicación indirecta (estigmergia) que permite a la colonia encontrar caminos eficientes hacia fuentes de alimento~\cite{dorigo1997}.
 
@@ -202,6 +235,7 @@ El presente trabajo documenta la implementación del algoritmo MACS-VRPTW aplica
 % =============================================================================
 % 2. MARCO TEÓRICO
 % =============================================================================
+\newpage
 \section{Marco Teórico}
 \label{sec:marco_teorico}
 
@@ -279,6 +313,7 @@ Las mejores soluciones conocidas (\textit{Best Known Solutions}, BKS) para estas
 % =============================================================================
 % 3. DESCRIPCIÓN DEL ALGORITMO
 % =============================================================================
+\newpage
 \section{Descripción del Algoritmo MACS-VRPTW}
 \label{sec:descripcion_algoritmo}
 
@@ -329,17 +364,19 @@ La regla de transición de estado determina cómo cada hormiga selecciona el sig
   \end{cases}
 \end{equation}
 
-\subsection{Cálculo de la Información Heurística $\eta_{ij}$}
+\subsection{Cálculo de la Información Heurística \texorpdfstring{$\eta_{ij}$}{η\_ij}}
 \label{subsec:eta}
 
-La información heurística $\eta_{ij}$ se calcula como el inverso de la distancia entre los nodos $i$ y $j$:
+La información heurística $\eta_{ij}$ incorpora no solo la distancia, sino también información sobre las ventanas de tiempo. Según el pseudocódigo del artículo~\cite{gambardella1999} (Figura~6, procedimiento \texttt{new\_active\_ant}), el cálculo se realiza como sigue. Sea~$t_k$ el tiempo actual de la hormiga~$k$, $t_{ij}$ el tiempo de viaje de~$i$ a~$j$, $b_j$ el inicio de la ventana de tiempo del cliente~$j$, y~$e_j$ el fin de la ventana:
 
-\begin{equation}
-  \label{eq:eta}
-  \eta_{ij} = \frac{1}{d_{ij}},
-\end{equation}
+\begin{align}
+  t_j^{\text{arr}} &= \max(t_k + t_{ij},\; b_j), \label{eq:arrival}\\
+  \Delta t_{ij} &= t_j^{\text{arr}} - t_k, \label{eq:delta}\\
+  D_{ij} &= \max\bigl(1,\; \Delta t_{ij} \cdot (e_j - t_k) - IN_j\bigr), \label{eq:distance_composite}\\
+  \eta_{ij} &= \frac{1}{D_{ij}}, \label{eq:eta}
+\end{align}
 
-\noindent donde $d_{ij}$ es la distancia euclidiana entre los nodos $i$ y $j$. En el contexto del VRPTW, $\eta_{ij}$ puede incorporar información adicional sobre las ventanas de tiempo y la urgencia de servicio, aunque en la implementación base se utiliza únicamente la distancia~\cite{gambardella1999}.
+\noindent donde $IN_j$ es un contador que penaliza a los clientes frecuentemente no visitados (usado únicamente por ACS-VEI; en ACS-TIME, $IN_j = 0$ para todo $j$). Esta formulación otorga mayor atractivo a los clientes que están cerca temporalmente y cuya ventana de tiempo está próxima a cerrarse.
 
 \subsection{Actualización Global de Feromona}
 \label{subsec:actualizacion_global}
@@ -381,7 +418,7 @@ Cada vez que una hormiga recorre un arco $(i, j)$, se aplica una actualización 
 \subsection{Colonia ACS-VEI}
 \label{subsec:acs_vei}
 
-La colonia ACS-VEI tiene como objetivo minimizar el número de vehículos utilizados. Su funcionamiento se ilustra en la Figura~\ref{fig:acs_time} (procedimiento ACS-TIME, Figura 3 del artículo original) y la Figura~\ref{fig:acs_vei} (procedimiento ACS-VEI, Figura 4 del artículo original).
+La colonia ACS-VEI tiene como objetivo minimizar el número de vehículos utilizados. Su funcionamiento se detalla en la Figura~\ref{fig:acs_vei} (procedimiento ACS-VEI, basado en la Figura 4 del artículo original).
 
 El procedimiento ACS-VEI opera de la siguiente manera:
 \begin{enumerate}[leftmargin=2cm]
@@ -483,6 +520,7 @@ El operador de intercambio CROSS~\cite{taillard1997, rochat1995} es un mecanismo
 % =============================================================================
 % 4. INSTANCIA C208
 % =============================================================================
+\newpage
 \section{Instancia C208}
 \label{sec:instancia_c208}
 
@@ -505,7 +543,7 @@ La instancia C208 pertenece al conjunto de problemas de referencia de Solomon~\c
     Categoría de ventana de tiempo & Tipo 2 (amplias) \\
     Capacidad del vehículo ($Q$)  & 700 \\
     Coordenada del depósito       & $(40, 50)$ \\
-    Ventana de tiempo del depósito & $[0, 1236]$ \\
+    Ventana de tiempo del depósito & $[0, 3390]$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -549,6 +587,7 @@ La Figura~\ref{fig:routes_bks} muestra la representación gráfica de las rutas 
 % =============================================================================
 % 5. IMPLEMENTACIÓN
 % =============================================================================
+\newpage
 \section{Implementación}
 \label{sec:implementacion}
 
@@ -564,6 +603,7 @@ La implementación del algoritmo MACS-VRPTW se realizó en \textbf{Python}, sele
   \item \textbf{PyYAML}: Lectura de archivos de configuración en formato YAML.
   \item \textbf{Loguru}: Sistema de \textit{logging} estructurado y configuración simplificada.
   \item \textbf{Pytest}: Framework para pruebas unitarias y de integración.
+  \item \textbf{Streamlit + Plotly}: Dashboard interactivo para exploración dinámica de resultados, visualización de rutas y comparación con el artículo original.
 \end{itemize}
 
 \subsection{Principios de Diseño SOLID}
@@ -622,7 +662,7 @@ Los parámetros del algoritmo se gestionan mediante archivos de configuración Y
     $q_0$    & 0.9   & Probabilidad de explotación en la regla de transición. \\
     $\beta$  & 1     & Peso de la información heurística. \\
     $\rho$   & 0.1   & Coeficiente de evaporación de feromona. \\
-    $m$      & 10    & Número de hormigas por colonia. \\
+    $m$      & 5 (10 en artículo) & Número de hormigas por colonia. \\
     Iteraciones & 100 & Número máximo de iteraciones. \\
     \bottomrule
   \end{tabular}
@@ -640,11 +680,49 @@ Se utiliza la biblioteca \textbf{Loguru} para implementar un sistema de \textit{
   \item Errores y advertencias durante la ejecución.
 \end{itemize}
 
+\subsection{Dashboard Interactivo}
+\label{subsec:dashboard}
+
+Se desarrolló un dashboard interactivo en Streamlit (\texttt{streamlit\_app.py}) que permite la exploración dinámica de los resultados del algoritmo. El dashboard incluye cinco pestañas principales:
+
+\begin{enumerate}[leftmargin=2cm]
+  \item \textbf{Mapa de rutas:} Visualización interactiva de las rutas obtenidas sobre la distribución geográfica de clientes, con codificación por color para cada vehículo e información detallada al pasar el cursor.
+  \item \textbf{Convergencia:} Gráfica de evolución de la distancia total y el número de vehículos a lo largo de las iteraciones.
+  \item \textbf{Comparación con el artículo:} Tabla comparativa con los resultados del artículo original y la BKS, incluyendo cálculo del \textit{gap} porcentual.
+  \item \textbf{Detalle de solución:} Desglose por ruta mostrando secuencia de clientes, carga acumulada y diagrama de Gantt de ventanas de tiempo.
+  \item \textbf{Análisis de instancia:} Estadísticas descriptivas, distribución de demandas y amplitud de ventanas de tiempo.
+\end{enumerate}
+
+El dashboard se ejecuta con el comando \texttt{streamlit run streamlit\_app.py} y respeta la separación de responsabilidades importando la lógica exclusivamente desde los módulos de \texttt{src/}.
+
 % =============================================================================
 % 6. RESULTADOS
 % =============================================================================
+\newpage
 \section{Resultados}
 \label{sec:resultados}
+
+\subsection{Resultados Experimentales}
+\label{subsec:resultados_experimentales}
+
+\begin{table}[H]
+  \centering
+  \caption{Resultados de las 3 corridas experimentales del algoritmo MACS-VRPTW sobre la instancia C208.}
+  \label{tab:resultados_corridas}
+  \begin{tabular}{ccccc}
+    \toprule
+    \textbf{Corrida} & \textbf{Semilla} & \textbf{Vehículos} & \textbf{Distancia} & \textbf{Tiempo (s)} \\
+    \midrule
+    1 & 42 & 3 & 588.32 & 367.46 \\
+    2 & 43 & 3 & 588.32 & 362.50 \\
+    3 & 44 & 3 & 588.32 & 389.55 \\
+    \midrule
+    \textbf{Promedio} & --- & \textbf{3.00} & \textbf{588.32} & \textbf{373.17} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Las 3 corridas encontraron de manera consistente la solución óptima conocida (BKS), lo que demuestra la robustez del algoritmo ante diferentes semillas aleatorias. El tiempo promedio de ejecución fue de 373.17 segundos ($\approx$6.2 minutos) por corrida.
 
 \subsection{Comparación con el Artículo Original}
 \label{subsec:comparacion_paper}
@@ -722,6 +800,7 @@ La Figura~\ref{fig:comparison_chart} presenta una comparación gráfica entre lo
 % =============================================================================
 % 7. ANÁLISIS
 % =============================================================================
+\newpage
 \section{Análisis}
 \label{sec:analisis}
 
@@ -746,12 +825,12 @@ La Figura~\ref{fig:convergence} muestra la curva de convergencia del algoritmo, 
   \label{fig:convergence}
 \end{figure}
 
-La curva de convergencia muestra un patrón característico de la instancia C208 (Clustered tipo 2): una caída dramática en las primeras iteraciones (de 1145.23 a 588.32 en menos de 10 iteraciones), seguida de estabilización. Esto se explica por la estructura geográfica agrupada de los clientes, que facilita la formación rápida de rutas eficientes una vez que la búsqueda local Or-opt reorganiza los clientes dentro de cada cluster. El tiempo promedio de ejecución fue de 373 segundos ($\approx$6.2 minutos) por corrida.
+La curva de convergencia muestra un patrón característico de la instancia C208 (Clustered tipo 2): una caída dramática en los primeros eventos de mejora (de 1145.23 a 588.32 en solo 3 eventos de mejora), seguida de estabilización. Esto se explica por la estructura geográfica agrupada de los clientes, que facilita la formación rápida de rutas eficientes una vez que la búsqueda local Or-opt reorganiza los clientes dentro de cada cluster. El tiempo promedio de ejecución fue de 373 segundos ($\approx$6.2 minutos) por corrida.
 
 \subsection{Sensibilidad a Parámetros}
 \label{subsec:sensibilidad}
 
-Se utilizaron los parámetros recomendados por el artículo original: $m=5$ hormigas, $q_0=0.9$, $\beta=1$, $\rho=0.1$, con $\tau_0 = 1/(n \cdot J_{\psi^{h}})$ donde $J_{\psi^{h}}$ es el costo de la solución inicial de nearest-neighbor. Los parámetros clave que influyen en el rendimiento del algoritmo son:
+Se utilizaron los parámetros del artículo original ($m=10$, $q_0=0.9$, $\beta=1$, $\rho=0.1$), con la excepción de que se redujo el número de hormigas a $m=5$ en la configuración experimental para optimizar el tiempo de cómputo. El valor inicial de feromona se calcula como $\tau_0 = 1/(n \cdot J^{nn})$ donde $J^{nn}$ es el costo de la solución inicial de nearest-neighbor. Los parámetros clave que influyen en el rendimiento del algoritmo son:
 
 \begin{itemize}[leftmargin=2cm]
   \item \textbf{$q_0$ (probabilidad de explotación):} Valores altos de $q_0$ (cercanos a 1) favorecen la explotación de las mejores soluciones conocidas, lo que puede llevar a convergencia prematura. Valores bajos favorecen la exploración, lo que puede reducir la velocidad de convergencia pero mejorar la diversidad de soluciones.
@@ -763,8 +842,18 @@ Se utilizaron los parámetros recomendados por el artículo original: $m=5$ horm
 % =============================================================================
 % 8. CONCLUSIONES POR INTEGRANTE
 % =============================================================================
+\newpage
 \section{Conclusiones por Integrante}
 \label{sec:conclusiones}
+
+\subsection{Esther Nohemí Encinas Guerrero (261536)}
+\label{subsec:conclusion_esther}
+
+% TODO: PERSONALIZAR -- Esther: escribe aquí tu conclusión personal.
+
+Este proyecto proporcionó una experiencia valiosa en la implementación de algoritmos metaheurísticos avanzados y su aplicación a problemas de optimización con restricciones del mundo real. La instancia C208 de Solomon resultó ser un caso de estudio interesante dado que, al tratarse de clientes agrupados en clusters con ventanas de tiempo amplias, permite observar cómo el algoritmo MACS-VRPTW aprovecha la estructura del problema para construir rutas eficientes.
+
+% TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
 
 \subsection{Javier Augusto Rebull Saucedo (263483)}
 \label{subsec:conclusion_javier}
@@ -784,20 +873,11 @@ El desarrollo de este proyecto permitió comprender a profundidad cómo las meta
 
 % TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
 
-\subsection{Esther Nohemí Encinas Guerrero (261536)}
-\label{subsec:conclusion_esther}
-
-% TODO: PERSONALIZAR -- Esther: escribe aquí tu conclusión personal.
-
-Este proyecto proporcionó una experiencia valiosa en la implementación de algoritmos metaheurísticos avanzados y su aplicación a problemas de optimización con restricciones del mundo real. La instancia C208 de Solomon resultó ser un caso de estudio interesante dado que, al tratarse de clientes agrupados en clusters con ventanas de tiempo amplias, permite observar cómo el algoritmo MACS-VRPTW aprovecha la estructura del problema para construir rutas eficientes.
-
-% TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
-
 % =============================================================================
 % 9. REFERENCIAS
 % =============================================================================
 \newpage
-\section*{Referencias}
+\renewcommand{\refname}{Referencias}
 \addcontentsline{toc}{section}{Referencias}
 
 \begin{thebibliography}{10}
@@ -834,10 +914,7 @@ R.~G. Porras~Alaniz,
 Maestría en Inteligencia Artificial y Analítica de Datos, Universidad Autónoma de Ciudad Juárez, 2026.
 
 \bibitem{sintef2024}
-SINTEF,
-``VRPTW Benchmark Problems -- 100 Customers,''
-[En línea]. Disponible: \url{https://www.sintef.no/projectweb/top/vrptw/solomon-benchmark/100-customers/}.
-[Accedido: 11 de marzo de 2026].
+SINTEF, ``VRPTW Benchmark Problems -- 100 Customers,'' [En línea]. Disponible: \url{https://www.sintef.no/projectweb/top/vrptw/solomon-benchmark/100-customers/}. [Accedido: 11 de marzo de 2026].
 
 \bibitem{hasle2007}
 G.~Hasle, K.-A. Lie y E.~Quak,

@@ -122,32 +122,44 @@ def plot_convergence(history: list[dict], output_path: str = "Figures/convergenc
         print("  Sin historial de convergencia disponible.")
         return
 
-    iters = [h["iteration"] for h in history]
+    events = list(range(len(history)))
     dists = [h["total_distance"] for h in history]
     vehs = [h["num_vehicles"] for h in history]
+    labels = [h.get("event", f"Evento {i}") for i, h in enumerate(history)]
 
     fig, ax1 = plt.subplots(figsize=(10, 5))
 
     color_dist = AZUL
-    ax1.set_xlabel("Iteración")
+    ax1.set_xlabel("Evento de mejora")
     ax1.set_ylabel("Distancia total", color=color_dist)
-    ax1.plot(iters, dists, "o-", color=color_dist, markersize=4, linewidth=1.5, label="Distancia")
+    ax1.step(events, dists, where="post", color=color_dist, linewidth=1.5, alpha=0.7)
+    ax1.scatter(events, dists, color=color_dist, s=60, zorder=5, edgecolors="white", linewidth=1)
     ax1.tick_params(axis="y", labelcolor=color_dist)
+    ax1.set_xticks(events)
+    ax1.set_xticklabels([str(e) for e in events])
 
-    # Marcar mejor punto
-    best_idx = dists.index(min(dists))
-    ax1.annotate(f"{dists[best_idx]:.2f}",
-                 (iters[best_idx], dists[best_idx]),
-                 fontsize=8, color="red", fontweight="bold",
-                 xytext=(10, 10), textcoords="offset points",
-                 arrowprops=dict(arrowstyle="->", color="red"))
+    # Anotar cada punto con su valor
+    for i, (x, y) in enumerate(zip(events, dists)):
+        offset_y = 15 if i == 0 else -20
+        ax1.annotate(f"{y:.2f}",
+                     (x, y), fontsize=8, color=color_dist, fontweight="bold",
+                     ha="center", xytext=(0, offset_y), textcoords="offset points",
+                     arrowprops=dict(arrowstyle="->", color=color_dist, lw=0.8))
 
     ax2 = ax1.twinx()
     color_veh = ORO
     ax2.set_ylabel("Número de vehículos", color=color_veh)
-    ax2.step(iters, vehs, "-", color=color_veh, linewidth=2, alpha=0.7, label="Vehículos", where="post")
+    ax2.step(events, vehs, where="post", color=color_veh, linewidth=2, alpha=0.7)
+    ax2.scatter(events, vehs, color=color_veh, s=60, zorder=5, edgecolors="white",
+                linewidth=1, marker="s")
     ax2.tick_params(axis="y", labelcolor=color_veh)
     ax2.set_ylim(0, max(vehs) + 2)
+    ax2.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+
+    # Anotar vehículos
+    for x, y in zip(events, vehs):
+        ax2.annotate(f"{y}", (x, y), fontsize=8, color=color_veh, fontweight="bold",
+                     ha="center", xytext=(0, 10), textcoords="offset points")
 
     ax1.set_title("Convergencia del algoritmo MACS-VRPTW", color=AZUL)
     ax1.grid(True, alpha=0.3)
