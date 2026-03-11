@@ -1,17 +1,17 @@
 {
   "run_id": 2,
   "seed": 43,
-  "timestamp": "2026-03-11T14:45:49.937465",
+  "timestamp": "2026-03-11T17:40:50.354048",
   "instance": "C208",
   "parameters": {
     "num_ants": 10,
     "q0": 0.9,
     "beta": 1,
     "rho": 0.1,
-    "max_iterations": 100,
-    "max_no_improvement": 15
+    "max_iterations": 300,
+    "max_no_improvement": 75
   },
-  "elapsed_seconds": 1550.56,
+  "elapsed_seconds": 7387.09,
   "solution": {
     "num_vehicles": 3,
     "total_distance": 588.32,
@@ -190,21 +190,21 @@
       "iteration": 1,
       "num_vehicles": 4,
       "total_distance": 667.02,
-      "elapsed_time": 150.13,
+      "elapsed_time": 132.67,
       "event": "ACS-TIME: distancia mejorada a 667.02"
     },
     {
       "iteration": 2,
       "num_vehicles": 3,
       "total_distance": 601.02,
-      "elapsed_time": 275.52,
+      "elapsed_time": 234.75,
       "event": "ACS-TIME: distancia mejorada a 601.02"
     },
     {
       "iteration": 6,
       "num_vehicles": 3,
       "total_distance": 588.32,
-      "elapsed_time": 682.59,
+      "elapsed_time": 601.1,
       "event": "ACS-TIME: distancia mejorada a 588.32"
     }
   ],

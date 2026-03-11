@@ -166,6 +166,7 @@
     {\large
       Esther Nohemí Encinas Guerrero (261536)\\[0.1cm]
       Javier Augusto Rebull Saucedo (263483)\\[0.1cm]
+      Jesús Alejandro Gutiérrez Araiza (261537)\\[0.1cm]
       Yazmín Ivonne Flores Martínez (261548)
     }
 
@@ -713,16 +714,16 @@ El dashboard se ejecuta con el comando \texttt{streamlit run streamlit\_app.py} 
     \toprule
     \textbf{Corrida} & \textbf{Semilla} & \textbf{Vehículos} & \textbf{Distancia} & \textbf{Tiempo (s)} \\
     \midrule
-    1 & 42 & 3 & 588.32 & 367.46 \\
-    2 & 43 & 3 & 588.32 & 362.50 \\
-    3 & 44 & 3 & 588.32 & 389.55 \\
+    1 & 42 & 3 & 588.32 & 377.93 \\
+    2 & 43 & 3 & 588.32 & 382.50 \\
+    3 & 44 & 3 & 588.32 & 400.68 \\
     \midrule
-    \textbf{Promedio} & --- & \textbf{3.00} & \textbf{588.32} & \textbf{373.17} \\
+    \textbf{Promedio} & --- & \textbf{3.00} & \textbf{588.32} & \textbf{387.04} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Las 3 corridas encontraron de manera consistente la solución óptima conocida (BKS), lo que demuestra la robustez del algoritmo ante diferentes semillas aleatorias. El tiempo promedio de ejecución fue de 373.17 segundos ($\approx$6.2 minutos) por corrida.
+Las 3 corridas encontraron de manera consistente la solución óptima conocida (BKS), lo que demuestra la robustez del algoritmo ante diferentes semillas aleatorias. El tiempo promedio de ejecución fue de 387.04 segundos ($\approx$6.5 minutos) por corrida.
 
 \subsection{Comparación con el Artículo Original}
 \label{subsec:comparacion_paper}
@@ -825,7 +826,7 @@ La Figura~\ref{fig:convergence} muestra la curva de convergencia del algoritmo, 
   \label{fig:convergence}
 \end{figure}
 
-La curva de convergencia muestra un patrón característico de la instancia C208 (Clustered tipo 2): una caída dramática en los primeros eventos de mejora (de 1145.23 a 588.32 en solo 3 eventos de mejora), seguida de estabilización. Esto se explica por la estructura geográfica agrupada de los clientes, que facilita la formación rápida de rutas eficientes una vez que la búsqueda local Or-opt reorganiza los clientes dentro de cada cluster. El tiempo promedio de ejecución fue de 373 segundos ($\approx$6.2 minutos) por corrida.
+La curva de convergencia muestra un patrón característico de la instancia C208 (Clustered tipo 2): una caída dramática en los primeros eventos de mejora (de 1145.23 a 588.32 en solo 3 eventos de mejora), seguida de estabilización. Esto se explica por la estructura geográfica agrupada de los clientes, que facilita la formación rápida de rutas eficientes una vez que la búsqueda local Or-opt reorganiza los clientes dentro de cada cluster. El tiempo promedio de ejecución fue de 387 segundos ($\approx$6.5 minutos) por corrida.
 
 \subsection{Sensibilidad a Parámetros}
 \label{subsec:sensibilidad}
@@ -861,6 +862,15 @@ Este proyecto proporcionó una experiencia valiosa en la implementación de algo
 % TODO: PERSONALIZAR -- Javier: escribe aquí tu conclusión personal.
 
 La implementación del algoritmo MACS-VRPTW representó un reto significativo que permitió profundizar en el entendimiento de las metaheurísticas basadas en colonias de hormigas y su aplicación a problemas de optimización combinatoria del mundo real. A través de este proyecto se pudieron identificar los mecanismos clave que hacen efectivo al enfoque ACO: la cooperación entre colonias, el balance entre exploración y explotación, y la importancia de los operadores de búsqueda local como complemento a la construcción guiada por feromona.
+
+% TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
+
+\subsection{Jesús Alejandro Gutiérrez Araiza (261537)}
+\label{subsec:conclusion_jesus}
+
+% TODO: PERSONALIZAR -- Jesús: escribe aquí tu conclusión personal.
+
+La participación en este proyecto permitió comprender de manera práctica cómo se implementa un algoritmo metaheurístico complejo desde cero y cómo se validan los resultados contra benchmarks establecidos. La demostración de que nuestra implementación alcanza la BKS en todas las corridas confirma que el algoritmo fue replicado correctamente y que las decisiones de diseño tomadas durante el desarrollo fueron acertadas.
 
 % TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
 

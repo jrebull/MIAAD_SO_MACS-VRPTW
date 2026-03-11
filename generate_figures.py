@@ -170,65 +170,215 @@ def plot_convergence(history: list[dict], output_path: str = "Figures/convergenc
 
 
 def plot_architecture(output_path: str = "Figures/architecture_macs.png") -> None:
-    """Fig 4: Diagrama de arquitectura MACS-VRPTW."""
-    fig, ax = plt.subplots(figsize=(12, 7))
-    ax.set_xlim(0, 12)
-    ax.set_ylim(0, 7)
-    ax.axis("off")
+    """Fig 4: Diagrama de arquitectura MACS-VRPTW — layout vertical 4 niveles."""
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 
-    # Controlador
-    rect = plt.Rectangle((3.5, 5.5), 5, 1.2, linewidth=2, edgecolor=AZUL,
-                          facecolor=CLARO, zorder=3)
-    ax.add_patch(rect)
-    ax.text(6, 6.1, "MACS-VRPTW\nControlador Principal", ha="center", va="center",
-            fontsize=11, fontweight="bold", color=AZUL)
+    ROJO = "#C0392B"
+    ROJO_CLARO = "#FDE8E8"
+    ORO_CLARO = "#FFF3D6"
+    GRIS_CLARO = "#F5F5F5"
+    ORO_OSCURO = "#8B6914"
+
+    fig, ax = plt.subplots(figsize=(14, 11))
+    ax.set_xlim(0, 14)
+    ax.set_ylim(0, 11.5)
+    ax.axis("off")
+    fig.patch.set_facecolor("white")
+
+    # =========================================================================
+    # NIVEL 1 — Controlador Principal
+    # =========================================================================
+    ctrl_w, ctrl_h = 5.5, 1.2
+    ctrl_x = (14 - ctrl_w) / 2
+    ctrl_y = 9.5
+    ctrl = FancyBboxPatch((ctrl_x, ctrl_y), ctrl_w, ctrl_h,
+                          boxstyle="round,pad=0.15", linewidth=2.5,
+                          edgecolor="#001a33", facecolor=AZUL, zorder=3)
+    ax.add_patch(ctrl)
+    ctrl_cx = ctrl_x + ctrl_w / 2
+    ax.text(ctrl_cx, ctrl_y + ctrl_h * 0.65,
+            "MACS-VRPTW", ha="center", va="center",
+            fontsize=14, fontweight="bold", color="white")
+    ax.text(ctrl_cx, ctrl_y + ctrl_h * 0.25,
+            "Controlador Principal", ha="center", va="center",
+            fontsize=10, color="#B0C4DE")
+    ax.text(ctrl_x + ctrl_w + 0.2, ctrl_y + ctrl_h * 0.5,
+            "Fig. 2", ha="left", va="center",
+            fontsize=7.5, color=GRIS, style="italic")
+
+    # =========================================================================
+    # NIVEL 2 — Colonias
+    # =========================================================================
+    col_w, col_h = 5.0, 2.6
+    gap = 1.0
+    total_cols = col_w * 2 + gap
+    left_start = (14 - total_cols) / 2
+    vei_x = left_start
+    vei_y = 6.0
+    time_x = left_start + col_w + gap
+    time_y = 6.0
 
     # ACS-VEI
-    rect_vei = plt.Rectangle((0.5, 3), 4, 1.5, linewidth=2, edgecolor=ORO,
-                              facecolor="#FFF8E7", zorder=3)
-    ax.add_patch(rect_vei)
-    ax.text(2.5, 3.75, "ACS-VEI\nMin. Vehículos (v-1)", ha="center", va="center",
-            fontsize=10, fontweight="bold", color=ORO)
+    vei = FancyBboxPatch((vei_x, vei_y), col_w, col_h,
+                         boxstyle="round,pad=0.15", linewidth=2,
+                         edgecolor=ORO, facecolor=ORO_CLARO, zorder=3)
+    ax.add_patch(vei)
+    vei_cx = vei_x + col_w / 2
+    ax.text(vei_cx, vei_y + col_h - 0.35,
+            "ACS-VEI", ha="center", va="center",
+            fontsize=13, fontweight="bold", color=ORO_OSCURO)
+    ax.text(vei_cx, vei_y + col_h - 0.75,
+            "Minimizar Vehículos (v−1)", ha="center", va="center",
+            fontsize=9, color=ORO_OSCURO)
+    for i, txt in enumerate(["• Vector IN (penalización)",
+                             "• Sin búsqueda local",
+                             "• Doble actualización global"]):
+        ax.text(vei_x + 0.4, vei_y + col_h - 1.25 - i * 0.38,
+                txt, ha="left", va="center", fontsize=8, color=GRIS)
+    ax.text(vei_x + col_w - 0.3, vei_y + 0.2,
+            "Fig. 4", ha="right", va="center",
+            fontsize=7, color=GRIS, style="italic")
 
     # ACS-TIME
-    rect_time = plt.Rectangle((7.5, 3), 4, 1.5, linewidth=2, edgecolor=AZUL,
-                               facecolor=CLARO, zorder=3)
-    ax.add_patch(rect_time)
-    ax.text(9.5, 3.75, "ACS-TIME\nMin. Distancia (v)", ha="center", va="center",
-            fontsize=10, fontweight="bold", color=AZUL)
+    time_box = FancyBboxPatch((time_x, time_y), col_w, col_h,
+                              boxstyle="round,pad=0.15", linewidth=2,
+                              edgecolor=AZUL, facecolor=CLARO, zorder=3)
+    ax.add_patch(time_box)
+    time_cx = time_x + col_w / 2
+    ax.text(time_cx, time_y + col_h - 0.35,
+            "ACS-TIME", ha="center", va="center",
+            fontsize=13, fontweight="bold", color=AZUL)
+    ax.text(time_cx, time_y + col_h - 0.75,
+            "Minimizar Distancia (v)", ha="center", va="center",
+            fontsize=9, color=AZUL)
+    for i, txt in enumerate(["• IN = 0 (sin penalización)",
+                             "• Búsqueda local activa",
+                             "• Actualización global simple"]):
+        ax.text(time_x + 0.4, time_y + col_h - 1.25 - i * 0.38,
+                txt, ha="left", va="center", fontsize=8, color=GRIS)
+    ax.text(time_x + col_w - 0.3, time_y + 0.2,
+            "Fig. 3", ha="right", va="center",
+            fontsize=7, color=GRIS, style="italic")
 
-    # Flechas
-    ax.annotate("", xy=(2.5, 4.5), xytext=(4.5, 5.5),
-                arrowprops=dict(arrowstyle="->", lw=2, color=ORO))
-    ax.annotate("", xy=(9.5, 4.5), xytext=(7.5, 5.5),
-                arrowprops=dict(arrowstyle="->", lw=2, color=AZUL))
+    # =========================================================================
+    # Flechas Nivel 1 ↔ Nivel 2
+    # =========================================================================
+    vei_top = vei_y + col_h
+    ctrl_bot = ctrl_y
 
-    # Solución global
-    rect_sol = plt.Rectangle((3.5, 0.5), 5, 1.2, linewidth=2, edgecolor="red",
-                              facecolor="#FFEEEE", zorder=3)
-    ax.add_patch(rect_sol)
-    ax.text(6, 1.1, "ψ^gb — Mejor Solución Global\nFeromonas compartidas", ha="center",
-            va="center", fontsize=10, fontweight="bold", color="red")
+    # Controlador → ACS-VEI
+    a1 = FancyArrowPatch((ctrl_cx - 1.0, ctrl_bot),
+                         (vei_cx + 0.5, vei_top + 0.05),
+                         arrowstyle="->,head_width=0.25,head_length=0.15",
+                         linewidth=2.5, color=ORO, zorder=4)
+    ax.add_patch(a1)
+    ax.text(ctrl_cx - 1.8, (ctrl_bot + vei_top) / 2 + 0.35,
+            "activa(v−1)", ha="center", va="center",
+            fontsize=8.5, color=ORO, fontweight="bold",
+            bbox=dict(facecolor="white", edgecolor="none", pad=1.5, alpha=0.95))
 
-    ax.annotate("", xy=(2.5, 3), xytext=(4.5, 1.7),
-                arrowprops=dict(arrowstyle="<->", lw=1.5, color=GRIS, ls="--"))
-    ax.annotate("", xy=(9.5, 3), xytext=(7.5, 1.7),
-                arrowprops=dict(arrowstyle="<->", lw=1.5, color=GRIS, ls="--"))
+    # Controlador → ACS-TIME
+    a2 = FancyArrowPatch((ctrl_cx + 1.0, ctrl_bot),
+                         (time_cx - 0.5, vei_top + 0.05),
+                         arrowstyle="->,head_width=0.25,head_length=0.15",
+                         linewidth=2.5, color=AZUL, zorder=4)
+    ax.add_patch(a2)
+    ax.text(ctrl_cx + 1.8, (ctrl_bot + vei_top) / 2 + 0.35,
+            "activa(v)", ha="center", va="center",
+            fontsize=8.5, color=AZUL, fontweight="bold",
+            bbox=dict(facecolor="white", edgecolor="none", pad=1.5, alpha=0.95))
 
-    # Componentes internos
-    components = [
-        (1.5, 2.2, "Nearest Neighbor\n(Solución Inicial)", GRIS),
-        (5, 2.2, "Procedimiento\nde Inserción", ACENTO),
-        (8.5, 2.2, "CROSS Exchange\n(Búsqueda Local)", GRIS),
-        (10.5, 2.2, "Or-opt", GRIS),
+    # =========================================================================
+    # NIVEL 3 — Componentes compartidos
+    # =========================================================================
+    comp_y = 3.0
+    comp_h = 1.3
+    comp_w = 2.8
+    comp_gap = 0.4
+    total_comp = comp_w * 4 + comp_gap * 3
+    comp_start = (14 - total_comp) / 2
+    comp_data = [
+        ("Nearest Neighbor", "Solución inicial ψ⁰"),
+        ("new_active_ant", "Construcción (Fig. 6)"),
+        ("Inserción", "Clientes no visitados"),
+        ("Búsqueda Local", "CROSS / Or-opt"),
     ]
-    for x, y, text, color in components:
-        ax.text(x, y, text, ha="center", va="center", fontsize=7.5, color=color,
-                style="italic", bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                                          edgecolor=color, alpha=0.7))
+    comp_centers = []
+    for idx, (title, subtitle) in enumerate(comp_data):
+        cx = comp_start + idx * (comp_w + comp_gap)
+        box = FancyBboxPatch((cx, comp_y), comp_w, comp_h,
+                             boxstyle="round,pad=0.1", linewidth=1.5,
+                             edgecolor="#888888", facecolor=GRIS_CLARO, zorder=3)
+        ax.add_patch(box)
+        ax.text(cx + comp_w / 2, comp_y + comp_h * 0.65,
+                title, ha="center", va="center",
+                fontsize=8.5, fontweight="bold", color="#333333")
+        ax.text(cx + comp_w / 2, comp_y + comp_h * 0.25,
+                subtitle, ha="center", va="center",
+                fontsize=7, color=GRIS, style="italic")
+        comp_centers.append(cx + comp_w / 2)
 
-    ax.set_title("Arquitectura del Algoritmo MACS-VRPTW", fontsize=14,
-                 fontweight="bold", color=AZUL, pad=10)
+    comp_top = comp_y + comp_h
+
+    # Flechas Nivel 2 → Nivel 3
+    # ACS-VEI → new_active_ant, Inserción
+    for tcx in [comp_centers[1], comp_centers[2]]:
+        arr = FancyArrowPatch((vei_cx, vei_y), (tcx, comp_top + 0.05),
+                              arrowstyle="->,head_width=0.15,head_length=0.1",
+                              linewidth=1.2, color=ORO, alpha=0.5, zorder=2)
+        ax.add_patch(arr)
+
+    # ACS-TIME → new_active_ant, Inserción, Búsqueda Local
+    for tcx in [comp_centers[1], comp_centers[2], comp_centers[3]]:
+        arr = FancyArrowPatch((time_cx, time_y), (tcx, comp_top + 0.05),
+                              arrowstyle="->,head_width=0.15,head_length=0.1",
+                              linewidth=1.2, color=AZUL, alpha=0.5, zorder=2)
+        ax.add_patch(arr)
+
+    # NN → Controlador (curva izquierda)
+    arr_nn = FancyArrowPatch((comp_start - 0.05, comp_top + 0.3),
+                             (ctrl_x - 0.05, ctrl_y + ctrl_h * 0.5),
+                             arrowstyle="->,head_width=0.15,head_length=0.1",
+                             linewidth=1.2, color=GRIS,
+                             connectionstyle="arc3,rad=-0.25", zorder=2)
+    ax.add_patch(arr_nn)
+    ax.text(0.7, 7.0, "τ₀ = 1/(n·Jⁿⁿ)", ha="center", va="center",
+            fontsize=7.5, color=GRIS, style="italic",
+            bbox=dict(facecolor="white", edgecolor=GRIS, pad=2,
+                      boxstyle="round,pad=0.2", alpha=0.9))
+
+    # =========================================================================
+    # NIVEL 4 — Solución global
+    # =========================================================================
+    sol_w, sol_h = 7, 1.2
+    sol_x = (14 - sol_w) / 2
+    sol_y = 0.8
+    sol = FancyBboxPatch((sol_x, sol_y), sol_w, sol_h,
+                         boxstyle="round,pad=0.15", linewidth=2.5,
+                         edgecolor=ROJO, facecolor=ROJO_CLARO, zorder=3)
+    ax.add_patch(sol)
+    ax.text(sol_x + sol_w / 2, sol_y + sol_h * 0.62,
+            "ψᵍᵇ — Mejor Solución Global", ha="center", va="center",
+            fontsize=12, fontweight="bold", color=ROJO)
+    ax.text(sol_x + sol_w / 2, sol_y + sol_h * 0.25,
+            "Matrices de feromona compartidas", ha="center", va="center",
+            fontsize=9, color=GRIS)
+
+    # Flechas Nivel 3 → Nivel 4 (bidireccionales)
+    sol_top = sol_y + sol_h
+    for cx in comp_centers:
+        arr_d = FancyArrowPatch((cx, comp_y), (cx, sol_top + 0.05),
+                                arrowstyle="<->,head_width=0.12,head_length=0.08",
+                                linewidth=0.8, color="#aaaaaa", linestyle="--", zorder=2)
+        ax.add_patch(arr_d)
+    ax.text(sol_x + sol_w + 0.2, sol_top + 0.35,
+            "lee / actualiza\nferomonas", ha="left", va="center",
+            fontsize=7, color="#999999", style="italic")
+
+    # Título
+    ax.text(7, 11.2, "Arquitectura del Algoritmo MACS-VRPTW",
+            ha="center", va="center", fontsize=16, fontweight="bold", color=AZUL)
+
     fig.tight_layout()
     fig.savefig(output_path, dpi=DPI, bbox_inches="tight")
     plt.close(fig)
