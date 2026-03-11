@@ -1,0 +1,1 @@
+from src.parsers.solomon_parser import parse_solomon_instance, parse_bks_solution

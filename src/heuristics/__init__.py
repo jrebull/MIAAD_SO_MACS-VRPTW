@@ -1,0 +1,1 @@
+from src.heuristics.nearest_neighbor import nearest_neighbor_solution

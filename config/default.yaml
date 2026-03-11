@@ -1,0 +1,21 @@
+# Configuración por defecto del algoritmo MACS-VRPTW
+# Parámetros basados en Gambardella, Taillard y Agazzi (1999)
+
+algorithm:
+  num_ants: 10            # m: número de hormigas por colonia
+  q0: 0.9                 # Probabilidad de explotación vs exploración
+  beta: 1                 # Peso de la información heurística
+  rho: 0.1                # Tasa de evaporación de feromonas
+  max_iterations: 200     # Iteraciones máximas por ciclo de colonias
+  max_no_improvement: 50  # Iteraciones sin mejora para detener
+
+instance:
+  path: "data/c208.txt"
+  bks_path: "data/c208_bks.txt"
+
+execution:
+  seed: 42
+  num_runs: 3
+  log_level: "INFO"
+  results_dir: "results"
+  figures_dir: "Figures"

@@ -1,0 +1,14 @@
+# Override de configuración para instancia C208
+# Solomon Benchmark - Clustered tipo 2, 100 clientes
+
+instance:
+  path: "data/c208.txt"
+  bks_path: "data/c208_bks.txt"
+
+algorithm:
+  max_iterations: 50
+  max_no_improvement: 10
+  num_ants: 5
+
+execution:
+  num_runs: 3

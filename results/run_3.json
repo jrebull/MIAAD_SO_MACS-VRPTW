@@ -1,0 +1,226 @@
+{
+  "run_id": 3,
+  "seed": 44,
+  "timestamp": "2026-03-11T14:14:03.524968",
+  "instance": "C208",
+  "parameters": {
+    "num_ants": 5,
+    "q0": 0.9,
+    "beta": 1,
+    "rho": 0.1,
+    "max_iterations": 50,
+    "max_no_improvement": 10
+  },
+  "elapsed_seconds": 389.55,
+  "solution": {
+    "num_vehicles": 3,
+    "total_distance": 588.32,
+    "num_served_customers": 100,
+    "is_feasible": true,
+    "routes": [
+      {
+        "route_id": 1,
+        "num_customers": 35,
+        "distance": 235.53,
+        "demand": 620,
+        "customers": [
+          93,
+          5,
+          75,
+          2,
+          1,
+          99,
+          100,
+          97,
+          92,
+          94,
+          95,
+          98,
+          7,
+          3,
+          4,
+          89,
+          91,
+          88,
+          86,
+          84,
+          83,
+          82,
+          85,
+          76,
+          71,
+          70,
+          73,
+          80,
+          79,
+          81,
+          78,
+          77,
+          96,
+          87,
+          90
+        ]
+      },
+      {
+        "route_id": 4,
+        "num_customers": 32,
+        "distance": 157.66,
+        "demand": 560,
+        "customers": [
+          67,
+          63,
+          62,
+          74,
+          72,
+          61,
+          64,
+          66,
+          69,
+          68,
+          65,
+          49,
+          55,
+          54,
+          53,
+          56,
+          58,
+          60,
+          59,
+          57,
+          40,
+          44,
+          46,
+          45,
+          51,
+          50,
+          52,
+          47,
+          42,
+          41,
+          43,
+          48
+        ]
+      },
+      {
+        "route_id": 6,
+        "num_customers": 33,
+        "distance": 195.13,
+        "demand": 630,
+        "customers": [
+          20,
+          22,
+          24,
+          27,
+          30,
+          29,
+          6,
+          32,
+          33,
+          31,
+          35,
+          37,
+          38,
+          39,
+          36,
+          34,
+          28,
+          26,
+          23,
+          18,
+          17,
+          19,
+          16,
+          14,
+          12,
+          15,
+          13,
+          25,
+          9,
+          11,
+          10,
+          8,
+          21
+        ]
+      }
+    ]
+  },
+  "comparison": {
+    "our_result": {
+      "vehicles": 3,
+      "distance": 588.32
+    },
+    "vs_paper_table1": {
+      "gap_vehicles": 0.0,
+      "gap_distance_pct": -0.78
+    },
+    "vs_paper_table2": {
+      "gap_vehicles": 0.0,
+      "gap_distance_pct": -0.26
+    },
+    "vs_bks": {
+      "gap_vehicles": 0,
+      "gap_distance_pct": 0.0
+    },
+    "paper_results": {
+      "table1": {
+        "vehicles": 3.0,
+        "distance": 592.97
+      },
+      "table2_best": {
+        "vehicles": 3.0,
+        "distance": 589.86
+      }
+    },
+    "bks": {
+      "vehicles": 3,
+      "distance": 588.32,
+      "authors": "Geir Hasle, Oddvar Kloster",
+      "date": "29.12.2003"
+    }
+  },
+  "history": [
+    {
+      "iteration": 0,
+      "num_vehicles": 6,
+      "total_distance": 1145.23,
+      "elapsed_time": 0.0,
+      "event": "Solución NN inicial"
+    },
+    {
+      "iteration": 1,
+      "num_vehicles": 4,
+      "total_distance": 667.02,
+      "elapsed_time": 43.77,
+      "event": "ACS-TIME: distancia mejorada a 667.02"
+    },
+    {
+      "iteration": 2,
+      "num_vehicles": 4,
+      "total_distance": 639.31,
+      "elapsed_time": 90.82,
+      "event": "ACS-TIME: distancia mejorada a 639.31"
+    },
+    {
+      "iteration": 3,
+      "num_vehicles": 4,
+      "total_distance": 629.39,
+      "elapsed_time": 123.44,
+      "event": "ACS-TIME: distancia mejorada a 629.39"
+    },
+    {
+      "iteration": 4,
+      "num_vehicles": 3,
+      "total_distance": 601.02,
+      "elapsed_time": 167.26,
+      "event": "ACS-TIME: distancia mejorada a 601.02"
+    },
+    {
+      "iteration": 9,
+      "num_vehicles": 3,
+      "total_distance": 588.32,
+      "elapsed_time": 349.23,
+      "event": "ACS-TIME: distancia mejorada a 588.32"
+    }
+  ],
+  "feasible": true
+}

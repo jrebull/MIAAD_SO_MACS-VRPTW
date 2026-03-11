@@ -1,0 +1,859 @@
+% =============================================================================
+% MACS-VRPTW: Documento Académico
+% Universidad Autónoma de Ciudad Juárez (UACJ)
+% Maestría en Inteligencia Artificial y Analítica de Datos (MIAAD)
+% Materia: Optimización Inteligente
+% Profesor: Mtro. Raúl Gibrán Porras Alaniz
+% Fecha de entrega: 16 de marzo de 2026
+% =============================================================================
+
+\documentclass[12pt, letterpaper]{article}
+
+% --- Codificación y lenguaje ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+
+% --- Fuente Helvetica (Arial-like) ---
+\usepackage[scaled=0.92]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% --- Geometría de página ---
+\usepackage[
+  letterpaper,
+  top=2.5cm,
+  bottom=2.5cm,
+  left=2.5cm,
+  right=2.5cm
+]{geometry}
+
+% --- Paquetes esenciales ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tabularx}
+\usepackage{parskip}
+
+% --- Colores institucionales UACJ ---
+\definecolor{azulUACJ}{HTML}{003366}
+\definecolor{oroUACJ}{HTML}{C8962E}
+
+% --- Configuración de hyperref ---
+\hypersetup{
+  colorlinks=true,
+  linkcolor=azulUACJ,
+  citecolor=azulUACJ,
+  urlcolor=azulUACJ,
+  bookmarksnumbered=true
+}
+
+% --- Configuración de títulos de sección ---
+\titleformat{\section}
+  {\Large\bfseries\color{azulUACJ}}
+  {\thesection.}{0.5em}{}
+  [\vspace{-0.5em}{\color{oroUACJ}\rule{\textwidth}{1.5pt}}]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{azulUACJ}}
+  {\thesubsection}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\color{azulUACJ}}
+  {\thesubsubsection}{0.5em}{}
+
+% --- Encabezado y pie de página ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{%
+  \small\color{azulUACJ}\textbf{UACJ} -- MIAAD%
+}
+\fancyhead[R]{%
+  % Placeholder para logo UACJ: descomentar cuando el archivo exista
+  % \includegraphics[height=0.8cm]{../Figures/logo_uacj.png}
+  \small\color{azulUACJ}\textbf{Optimización Inteligente}%
+}
+\fancyfoot[C]{\small\color{azulUACJ}\thepage}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\headrule}{{\color{oroUACJ}\hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{{\color{oroUACJ}\hrule width\headwidth height\footrulewidth \vskip-\footrulewidth}}
+
+% --- Ruta de figuras ---
+\graphicspath{{../Figures/}}
+
+% --- Configuración de captions ---
+\captionsetup{
+  font=small,
+  labelfont={bf, color=azulUACJ},
+  textfont={color=black},
+  justification=centering
+}
+
+% =============================================================================
+% INICIO DEL DOCUMENTO
+% =============================================================================
+\begin{document}
+
+% --- Portada ---
+\begin{titlepage}
+  \begin{center}
+
+    \vspace*{1cm}
+
+    % Placeholder para logo UACJ
+    % Descomentar la siguiente línea cuando el archivo de logo exista:
+    % \includegraphics[width=4cm]{../Figures/logo_uacj.png}
+
+    \vspace{0.5cm}
+
+    {\color{azulUACJ}\rule{\textwidth}{2pt}}
+
+    \vspace{0.5cm}
+
+    {\LARGE\bfseries\color{azulUACJ}
+      Universidad Autónoma de Ciudad Juárez}
+
+    \vspace{0.3cm}
+
+    {\large\color{azulUACJ}
+      Maestría en Inteligencia Artificial y Analítica de Datos}
+
+    \vspace{0.3cm}
+
+    {\color{oroUACJ}\rule{0.6\textwidth}{1pt}}
+
+    \vspace{1.5cm}
+
+    {\Huge\bfseries\color{azulUACJ}
+      MACS-VRPTW}
+
+    \vspace{0.5cm}
+
+    {\Large\color{azulUACJ}
+      Sistema de Múltiples Colonias de Hormigas para el\\
+      Problema de Ruteo de Vehículos con Ventanas de Tiempo}
+
+    \vspace{1.5cm}
+
+    {\color{oroUACJ}\rule{0.6\textwidth}{1pt}}
+
+    \vspace{1cm}
+
+    {\large\bfseries\color{azulUACJ} Materia:}\\[0.3cm]
+    {\large Optimización Inteligente}
+
+    \vspace{0.8cm}
+
+    {\large\bfseries\color{azulUACJ} Profesor:}\\[0.3cm]
+    {\large Mtro. Raúl Gibrán Porras Alaniz}
+
+    \vspace{0.8cm}
+
+    {\large\bfseries\color{azulUACJ} Integrantes:}\\[0.3cm]
+    {\large
+      Javier Augusto Rebull Saucedo (263483)\\[0.2cm]
+      Yazmín Ivonne Flores Martínez (261548)\\[0.2cm]
+      Esther Nohemí Encinas Guerrero (261536)
+    }
+
+    \vfill
+
+    {\large\bfseries\color{azulUACJ} Fecha de entrega:}\\[0.3cm]
+    {\large 16 de marzo de 2026}
+
+    \vspace{0.5cm}
+
+    {\color{azulUACJ}\rule{\textwidth}{2pt}}
+
+  \end{center}
+\end{titlepage}
+
+% --- Tabla de contenidos ---
+\newpage
+\tableofcontents
+\newpage
+
+% =============================================================================
+% 1. INTRODUCCIÓN
+% =============================================================================
+\section{Introducción}
+\label{sec:introduccion}
+
+El \textit{Vehicle Routing Problem with Time Windows} (VRPTW) es uno de los problemas de optimización combinatoria más estudiados en el campo de la investigación de operaciones y la logística~\cite{solomon1987}. Este problema consiste en determinar un conjunto de rutas de costo mínimo para una flota de vehículos que deben atender a un grupo de clientes, cada uno con una demanda específica y una ventana de tiempo dentro de la cual debe ser servido. Todos los vehículos parten y regresan a un depósito central, respetando restricciones de capacidad y temporalidad~\cite{hasle2007}.
+
+Formalmente, el VRPTW se define sobre un grafo completo $G = (V, A)$, donde $V = \{0, 1, 2, \ldots, n\}$ es el conjunto de nodos (el nodo $0$ representa el depósito y los nodos $1, \ldots, n$ representan los clientes) y $A$ es el conjunto de arcos. Cada cliente $i$ tiene asociada una demanda $d_i$, una ventana de tiempo $[e_i, l_i]$ y un tiempo de servicio $s_i$. Cada vehículo tiene una capacidad máxima $Q$ y debe completar su ruta dentro de la ventana de tiempo del depósito $[e_0, l_0]$. El objetivo es minimizar simultáneamente el número de vehículos utilizados y la distancia total recorrida~\cite{gambardella1999}.
+
+Las metaheurísticas basadas en colonias de hormigas (\textit{Ant Colony Optimization}, ACO) han demostrado ser herramientas efectivas para abordar problemas de optimización combinatoria de tipo NP-difícil~\cite{dorigo1996}. Estas metaheurísticas se inspiran en el comportamiento colectivo de las hormigas reales, las cuales depositan feromona en los caminos que recorren, creando un mecanismo de comunicación indirecta (estigmergia) que permite a la colonia encontrar caminos eficientes hacia fuentes de alimento~\cite{dorigo1997}.
+
+En particular, el algoritmo \textbf{MACS-VRPTW} (\textit{Multiple Ant Colony System for the VRPTW}), propuesto por Gambardella, Taillard y Agazzi~\cite{gambardella1999}, utiliza dos colonias de hormigas que cooperan para optimizar de manera simultánea los dos objetivos del VRPTW: minimizar el número de vehículos (\textbf{ACS-VEI}) y minimizar la distancia total recorrida (\textbf{ACS-TIME}). Este enfoque multiobjetivo, combinado con procedimientos de búsqueda local como la inserción y el intercambio CROSS, ha permitido obtener soluciones de alta calidad para las instancias de referencia de Solomon~\cite{solomon1987}.
+
+El presente trabajo documenta la implementación del algoritmo MACS-VRPTW aplicado a la instancia C208 del conjunto de pruebas de Solomon, describiendo la formulación matemática, los componentes del algoritmo, la implementación en Python y el análisis de los resultados obtenidos, en el contexto de la materia de Optimización Inteligente del programa MIAAD de la UACJ~\cite{porras2026material, porras2026actividad}.
+
+% =============================================================================
+% 2. MARCO TEÓRICO
+% =============================================================================
+\section{Marco Teórico}
+\label{sec:marco_teorico}
+
+\subsection{Optimización por Colonias de Hormigas (ACO)}
+\label{subsec:aco}
+
+La Optimización por Colonias de Hormigas (\textit{Ant Colony Optimization}, ACO) es una familia de metaheurísticas propuesta originalmente por Dorigo, Maniezzo y Colorni~\cite{dorigo1996}. El paradigma ACO se inspira en la forma en que las hormigas reales encuentran caminos óptimos entre su colonia y las fuentes de alimento. Las hormigas depositan una sustancia química llamada \textit{feromona} en los caminos que recorren; la cantidad de feromona en un camino influye en la probabilidad de que otras hormigas lo elijan, generando un mecanismo de retroalimentación positiva que converge hacia soluciones de buena calidad.
+
+Los componentes fundamentales de cualquier algoritmo ACO son:
+\begin{itemize}[leftmargin=2cm]
+  \item \textbf{Representación del problema} como un grafo donde las hormigas construyen soluciones.
+  \item \textbf{Regla de transición de estado} que determina cómo las hormigas eligen el siguiente nodo a visitar.
+  \item \textbf{Actualización de feromona} que refuerza las mejores soluciones encontradas.
+  \item \textbf{Información heurística} que guía la búsqueda hacia soluciones prometedoras.
+\end{itemize}
+
+\subsection{Sistema de Colonias de Hormigas (ACS)}
+\label{subsec:acs}
+
+El \textit{Ant Colony System} (ACS), propuesto por Dorigo y Gambardella~\cite{dorigo1997}, es una variante avanzada del \textit{Ant System} original que introduce tres mecanismos clave:
+
+\begin{enumerate}[leftmargin=2cm]
+  \item \textbf{Regla de transición pseudo-aleatoria proporcional:} combina explotación (elegir el mejor nodo según feromona e información heurística) con exploración (selección probabilística).
+  \item \textbf{Actualización global de feromona:} solo la hormiga que encontró la mejor solución global deposita feromona, concentrando la búsqueda en las mejores regiones del espacio de soluciones.
+  \item \textbf{Actualización local de feromona:} cada hormiga reduce la feromona de los arcos que recorre, promoviendo la diversificación y evitando la convergencia prematura.
+\end{enumerate}
+
+Estos mecanismos permiten al ACS lograr un balance efectivo entre la \textit{intensificación} (explotación de soluciones prometedoras) y la \textit{diversificación} (exploración de nuevas regiones del espacio de búsqueda)~\cite{dorigo1997}.
+
+\subsection{Formulación del VRPTW}
+\label{subsec:vrptw_formulacion}
+
+El VRPTW se formula como un problema de optimización con los siguientes elementos:
+
+\textbf{Datos de entrada:}
+\begin{itemize}[leftmargin=2cm]
+  \item Conjunto de clientes $\mathcal{C} = \{1, 2, \ldots, n\}$ y depósito $\{0\}$.
+  \item Distancia (o costo) $d_{ij}$ entre cada par de nodos $i, j \in V$.
+  \item Demanda $q_i$ de cada cliente $i \in \mathcal{C}$.
+  \item Ventana de tiempo $[e_i, l_i]$ para cada nodo $i \in V$.
+  \item Tiempo de servicio $s_i$ para cada cliente $i \in \mathcal{C}$.
+  \item Capacidad del vehículo $Q$.
+\end{itemize}
+
+\textbf{Función objetivo jerárquica:}
+\begin{enumerate}[leftmargin=2cm]
+  \item Minimizar el número de vehículos $NV$.
+  \item Minimizar la distancia total recorrida $TD = \sum_{k} \sum_{(i,j) \in \text{ruta}_k} d_{ij}$.
+\end{enumerate}
+
+\textbf{Restricciones:}
+\begin{itemize}[leftmargin=2cm]
+  \item Cada cliente es visitado exactamente una vez.
+  \item Cada ruta comienza y termina en el depósito.
+  \item La carga total de cada ruta no excede la capacidad $Q$.
+  \item El servicio en cada cliente $i$ inicia dentro de su ventana de tiempo $[e_i, l_i]$.
+  \item Si un vehículo llega antes de $e_i$, debe esperar hasta $e_i$ para iniciar el servicio.
+\end{itemize}
+
+\subsection{Instancias de Referencia de Solomon}
+\label{subsec:solomon_benchmarks}
+
+Solomon~\cite{solomon1987} propuso un conjunto de instancias de referencia para el VRPTW que se han convertido en el estándar para evaluar algoritmos. Estas instancias se clasifican en seis categorías según la distribución geográfica de los clientes y la amplitud de las ventanas de tiempo:
+
+\begin{itemize}[leftmargin=2cm]
+  \item \textbf{Tipo R:} Clientes distribuidos aleatoriamente (\textit{Random}).
+  \item \textbf{Tipo C:} Clientes agrupados en clusters (\textit{Clustered}).
+  \item \textbf{Tipo RC:} Combinación de distribución aleatoria y agrupada.
+  \item \textbf{Tipo 1:} Ventanas de tiempo estrechas (horizonte corto).
+  \item \textbf{Tipo 2:} Ventanas de tiempo amplias (horizonte largo).
+\end{itemize}
+
+Las mejores soluciones conocidas (\textit{Best Known Solutions}, BKS) para estas instancias se mantienen actualizadas en el repositorio de SINTEF~\cite{sintef2024}, proporcionando un punto de referencia objetivo para la comparación de algoritmos.
+
+% =============================================================================
+% 3. DESCRIPCIÓN DEL ALGORITMO
+% =============================================================================
+\section{Descripción del Algoritmo MACS-VRPTW}
+\label{sec:descripcion_algoritmo}
+
+El algoritmo MACS-VRPTW~\cite{gambardella1999} emplea dos colonias de hormigas que trabajan de manera concurrente y cooperativa sobre una estructura de feromona compartida. La arquitectura general del sistema se presenta en la Figura~\ref{fig:architecture}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{architecture_macs.png}
+  \caption{Arquitectura general del algoritmo MACS-VRPTW con las dos colonias ACS-VEI y ACS-TIME cooperando mediante una estructura de feromona compartida.}
+  \label{fig:architecture}
+\end{figure}
+
+\subsection{Regla de Transición de Estado}
+\label{subsec:regla_transicion}
+
+La regla de transición de estado determina cómo cada hormiga selecciona el siguiente cliente a visitar. Se utiliza una regla \textit{pseudo-aleatoria proporcional} que combina explotación y exploración. Sea $q$ un número aleatorio uniformemente distribuido en $[0, 1]$ y $q_0 \in [0, 1]$ un parámetro del algoritmo. Cuando una hormiga ubicada en el nodo $r$ debe elegir el siguiente nodo $s$:
+
+\begin{equation}
+  \label{eq:state_transition}
+  s =
+  \begin{cases}
+    \displaystyle\arg\max_{u \in \mathcal{N}_k(r)}
+      \left\{
+        \tau_{ru} \cdot [\eta_{ru}]^{\beta}
+      \right\}
+    & \text{si } q \leq q_0 \quad \text{(explotación)}, \\[12pt]
+    S & \text{si } q > q_0 \quad \text{(exploración)},
+  \end{cases}
+\end{equation}
+
+\noindent donde:
+\begin{itemize}[leftmargin=2cm]
+  \item $\tau_{ru}$ es el nivel de feromona en el arco $(r, u)$.
+  \item $\eta_{ru}$ es la información heurística (visibilidad) del arco $(r, u)$.
+  \item $\beta$ es el parámetro que controla la importancia relativa de la información heurística.
+  \item $\mathcal{N}_k(r)$ es el conjunto de nodos factibles para la hormiga $k$ desde el nodo $r$.
+  \item $S$ es un nodo seleccionado aleatoriamente según la distribución de probabilidad:
+\end{itemize}
+
+\begin{equation}
+  \label{eq:probabilidad_exploracion}
+  p_k(r, s) =
+  \begin{cases}
+    \displaystyle\frac{\tau_{rs} \cdot [\eta_{rs}]^{\beta}}
+    {\displaystyle\sum_{u \in \mathcal{N}_k(r)} \tau_{ru} \cdot [\eta_{ru}]^{\beta}}
+    & \text{si } s \in \mathcal{N}_k(r), \\[12pt]
+    0 & \text{en otro caso}.
+  \end{cases}
+\end{equation}
+
+\subsection{Cálculo de la Información Heurística $\eta_{ij}$}
+\label{subsec:eta}
+
+La información heurística $\eta_{ij}$ se calcula como el inverso de la distancia entre los nodos $i$ y $j$:
+
+\begin{equation}
+  \label{eq:eta}
+  \eta_{ij} = \frac{1}{d_{ij}},
+\end{equation}
+
+\noindent donde $d_{ij}$ es la distancia euclidiana entre los nodos $i$ y $j$. En el contexto del VRPTW, $\eta_{ij}$ puede incorporar información adicional sobre las ventanas de tiempo y la urgencia de servicio, aunque en la implementación base se utiliza únicamente la distancia~\cite{gambardella1999}.
+
+\subsection{Actualización Global de Feromona}
+\label{subsec:actualizacion_global}
+
+La actualización global de feromona refuerza los arcos pertenecientes a la mejor solución encontrada hasta el momento. Solo la hormiga que produjo la mejor solución global ($s^{gb}$) deposita feromona:
+
+\begin{equation}
+  \label{eq:global_update}
+  \tau_{ij} \leftarrow (1 - \rho) \cdot \tau_{ij} + \frac{\rho}{J^{gb}},
+  \quad \forall (i, j) \in s^{gb},
+\end{equation}
+
+\noindent donde:
+\begin{itemize}[leftmargin=2cm]
+  \item $\rho \in (0, 1]$ es el coeficiente de evaporación de feromona.
+  \item $J^{gb}$ es el costo (distancia total) de la mejor solución global $s^{gb}$.
+  \item La actualización se aplica únicamente a los arcos $(i, j)$ que forman parte de la mejor solución global.
+\end{itemize}
+
+\subsection{Actualización Local de Feromona}
+\label{subsec:actualizacion_local}
+
+Cada vez que una hormiga recorre un arco $(i, j)$, se aplica una actualización local de feromona que reduce el nivel de feromona en ese arco, promoviendo la diversificación:
+
+\begin{equation}
+  \label{eq:local_update}
+  \tau_{ij} \leftarrow (1 - \rho) \cdot \tau_{ij} + \rho \cdot \tau_0,
+\end{equation}
+
+\noindent donde $\tau_0$ es el nivel inicial de feromona, calculado como:
+
+\begin{equation}
+  \label{eq:tau_0}
+  \tau_0 = \frac{1}{n \cdot J^{nn}},
+\end{equation}
+
+\noindent siendo $n$ el número de clientes y $J^{nn}$ el costo de una solución obtenida mediante el heurístico del vecino más cercano (\textit{nearest neighbor}).
+
+\subsection{Colonia ACS-VEI}
+\label{subsec:acs_vei}
+
+La colonia ACS-VEI tiene como objetivo minimizar el número de vehículos utilizados. Su funcionamiento se ilustra en la Figura~\ref{fig:acs_time} (procedimiento ACS-TIME, Figura 3 del artículo original) y la Figura~\ref{fig:acs_vei} (procedimiento ACS-VEI, Figura 4 del artículo original).
+
+El procedimiento ACS-VEI opera de la siguiente manera:
+\begin{enumerate}[leftmargin=2cm]
+  \item Se parte de la mejor solución factible encontrada hasta el momento con $NV$ vehículos.
+  \item Se intenta reducir el número de vehículos a $NV - 1$ eliminando una ruta y redistribuyendo sus clientes entre las rutas restantes.
+  \item Las hormigas de ACS-VEI construyen soluciones intentando servir a todos los clientes con $NV - 1$ vehículos.
+  \item Si se encuentra una solución factible con $NV - 1$ rutas, se actualiza $NV$ y se repite el proceso.
+  \item La estructura de feromona se actualiza para reforzar las soluciones con menos vehículos.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{
+    \textbf{Procedimiento ACS-VEI} (Figura 4 de~\cite{gambardella1999})\\[6pt]
+    \textbf{Entrada:} Solución factible $s^*$ con $NV$ vehículos\\
+    \textbf{Salida:} Solución con el menor número de vehículos posible\\[4pt]
+    1. Establecer $NV_{\text{target}} \leftarrow NV - 1$\\
+    2. Eliminar la ruta con menor costo de $s^*$\\
+    3. Marcar los clientes de la ruta eliminada como no asignados\\
+    4. \textbf{Repetir}\\
+    \hspace*{1cm} a. Cada hormiga construye una solución con $NV_{\text{target}}$ rutas\\
+    \hspace*{1cm} b. Insertar clientes no asignados usando procedimiento de inserción\\
+    \hspace*{1cm} c. Aplicar búsqueda local (intercambio CROSS)\\
+    \hspace*{1cm} d. Actualización local de feromona (Ecuación~\ref{eq:local_update})\\
+    \hspace*{1cm} e. \textbf{Si} se encontró solución factible con $NV_{\text{target}}$ rutas:\\
+    \hspace*{2cm} Actualizar $s^*$, $NV \leftarrow NV_{\text{target}}$, $NV_{\text{target}} \leftarrow NV - 1$\\
+    5. Actualización global de feromona (Ecuación~\ref{eq:global_update})\\
+    6. \textbf{Hasta} criterio de parada
+  }}
+  \caption{Pseudocódigo del procedimiento ACS-VEI para la minimización del número de vehículos (basado en la Figura 4 de~\cite{gambardella1999}).}
+  \label{fig:acs_vei}
+\end{figure}
+
+\subsection{Colonia ACS-TIME}
+\label{subsec:acs_time}
+
+La colonia ACS-TIME tiene como objetivo minimizar la distancia total recorrida, manteniendo el número de vehículos en el mínimo encontrado por ACS-VEI:
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{
+    \textbf{Procedimiento ACS-TIME} (Figura 3 de~\cite{gambardella1999})\\[6pt]
+    \textbf{Entrada:} Número de vehículos $NV$, mejor solución $s^*$\\
+    \textbf{Salida:} Solución con distancia total minimizada\\[4pt]
+    1. Inicializar feromona con $\tau_0$ (Ecuación~\ref{eq:tau_0})\\
+    2. \textbf{Repetir}\\
+    \hspace*{1cm} a. Cada hormiga construye solución con $NV$ rutas:\\
+    \hspace*{2cm} -- Seleccionar siguiente cliente con Ecuación~\ref{eq:state_transition}\\
+    \hspace*{2cm} -- Aplicar actualización local (Ecuación~\ref{eq:local_update})\\
+    \hspace*{1cm} b. Aplicar búsqueda local (intercambio CROSS)\\
+    \hspace*{1cm} c. \textbf{Si} nueva solución mejora $s^*$: actualizar $s^*$\\
+    \hspace*{1cm} d. Actualización global de feromona (Ecuación~\ref{eq:global_update})\\
+    3. \textbf{Hasta} criterio de parada\\
+    4. \textbf{Retornar} $s^*$
+  }}
+  \caption{Pseudocódigo del procedimiento ACS-TIME para la minimización de la distancia total (basado en la Figura 3 de~\cite{gambardella1999}).}
+  \label{fig:acs_time}
+\end{figure}
+
+\subsection{Procedimiento \texttt{new\_active\_ant}}
+\label{subsec:new_active_ant}
+
+El procedimiento \texttt{new\_active\_ant} (Figura 6 de~\cite{gambardella1999}) es el mecanismo mediante el cual cada hormiga construye una solución completa. Este procedimiento gestiona la construcción incremental de rutas, la verificación de factibilidad y la inserción de clientes:
+
+\begin{figure}[H]
+  \centering
+  \fbox{\parbox{0.85\textwidth}{
+    \textbf{Procedimiento new\_active\_ant} (Figura 6 de~\cite{gambardella1999})\\[6pt]
+    \textbf{Entrada:} Hormiga $k$, conjunto de clientes no visitados $\mathcal{U}$\\
+    \textbf{Salida:} Solución (conjunto de rutas) construida por la hormiga\\[4pt]
+    1. Inicializar ruta actual partiendo del depósito\\
+    2. \textbf{Mientras} $\mathcal{U} \neq \emptyset$:\\
+    \hspace*{1cm} a. Calcular $\mathcal{N}_k(r)$: clientes factibles desde la posición actual $r$\\
+    \hspace*{1cm} b. \textbf{Si} $\mathcal{N}_k(r) \neq \emptyset$:\\
+    \hspace*{2cm} -- Seleccionar siguiente cliente $s$ usando Ecuación~\ref{eq:state_transition}\\
+    \hspace*{2cm} -- Mover hormiga a $s$, actualizar ruta y tiempos\\
+    \hspace*{2cm} -- $\mathcal{U} \leftarrow \mathcal{U} \setminus \{s\}$\\
+    \hspace*{2cm} -- Actualización local de feromona (Ecuación~\ref{eq:local_update})\\
+    \hspace*{1cm} c. \textbf{Si no}:\\
+    \hspace*{2cm} -- Regresar al depósito, cerrar ruta actual\\
+    \hspace*{2cm} -- Iniciar nueva ruta desde el depósito\\
+    3. Regresar al depósito, cerrar última ruta\\
+    4. \textbf{Retornar} conjunto de rutas
+  }}
+  \caption{Pseudocódigo del procedimiento \texttt{new\_active\_ant} para la construcción de soluciones (basado en la Figura 6 de~\cite{gambardella1999}).}
+  \label{fig:new_active_ant}
+\end{figure}
+
+\subsection{Procedimiento de Inserción}
+\label{subsec:insercion}
+
+El procedimiento de inserción se utiliza para reubicar clientes no asignados (por ejemplo, los clientes de una ruta eliminada por ACS-VEI) en las rutas restantes. Para cada cliente no asignado $u$, se evalúa su inserción en todas las posiciones posibles de todas las rutas existentes, seleccionando la posición que minimice el incremento en el costo total mientras se mantenga la factibilidad de las restricciones de capacidad y ventanas de tiempo~\cite{gambardella1999, solomon1987}.
+
+\subsection{Intercambio CROSS}
+\label{subsec:cross}
+
+El operador de intercambio CROSS~\cite{taillard1997, rochat1995} es un mecanismo de búsqueda local que mejora la solución intercambiando segmentos entre pares de rutas. Dado un par de rutas $(r_1, r_2)$, el intercambio CROSS selecciona un segmento de cada ruta y los intercambia, verificando que la solución resultante sea factible y mejore el costo total. Este operador es particularmente efectivo para redistribuir clientes entre rutas y reducir la distancia total recorrida~\cite{gambardella1999}.
+
+% =============================================================================
+% 4. INSTANCIA C208
+% =============================================================================
+\section{Instancia C208}
+\label{sec:instancia_c208}
+
+\subsection{Descripción de la Instancia}
+\label{subsec:descripcion_instancia}
+
+La instancia C208 pertenece al conjunto de problemas de referencia de Solomon~\cite{solomon1987} y presenta las siguientes características:
+
+\begin{table}[H]
+  \centering
+  \caption{Características de la instancia C208 de Solomon.}
+  \label{tab:c208_caracteristicas}
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Parámetro}            & \textbf{Valor} \\
+    \midrule
+    Nombre de la instancia        & C208 \\
+    Número de clientes            & 100 \\
+    Tipo de distribución          & Agrupada (\textit{Clustered}) \\
+    Categoría de ventana de tiempo & Tipo 2 (amplias) \\
+    Capacidad del vehículo ($Q$)  & 700 \\
+    Coordenada del depósito       & $(40, 50)$ \\
+    Ventana de tiempo del depósito & $[0, 1236]$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+El formato Solomon especifica, para cada cliente, las coordenadas $(x_i, y_i)$, la demanda $q_i$, la ventana de tiempo $[e_i, l_i]$ y el tiempo de servicio $s_i$. La distribución espacial de los clientes de la instancia C208 se muestra en la Figura~\ref{fig:c208_instance}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{c208_instance.png}
+  \caption{Distribución espacial de los 100 clientes de la instancia C208 de Solomon. Los clientes se encuentran organizados en clusters, característica propia de las instancias tipo C.}
+  \label{fig:c208_instance}
+\end{figure}
+
+\subsection{Mejor Solución Conocida (BKS)}
+\label{subsec:bks}
+
+De acuerdo con el repositorio de SINTEF~\cite{sintef2024}, la mejor solución conocida (\textit{Best Known Solution}, BKS) para la instancia C208 es:
+
+\begin{table}[H]
+  \centering
+  \caption{Mejor solución conocida (BKS) para la instancia C208.}
+  \label{tab:bks_c208}
+  \begin{tabular}{cc}
+    \toprule
+    \textbf{Número de vehículos ($NV$)} & \textbf{Distancia total ($TD$)} \\
+    \midrule
+    3 & 588.32 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La Figura~\ref{fig:routes_bks} muestra la representación gráfica de las rutas correspondientes a la BKS de la instancia C208.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{c208_routes_bks.png}
+  \caption{Rutas de la mejor solución conocida (BKS) para la instancia C208: 3 vehículos con distancia total de 588.32.}
+  \label{fig:routes_bks}
+\end{figure}
+
+% =============================================================================
+% 5. IMPLEMENTACIÓN
+% =============================================================================
+\section{Implementación}
+\label{sec:implementacion}
+
+\subsection{Tecnologías y Herramientas}
+\label{subsec:tecnologias}
+
+La implementación del algoritmo MACS-VRPTW se realizó en \textbf{Python}, seleccionado por su expresividad, amplio ecosistema de bibliotecas científicas y facilidad para prototipado rápido. Las principales herramientas y bibliotecas utilizadas son:
+
+\begin{itemize}[leftmargin=2cm]
+  \item \textbf{Python 3.11+}: Lenguaje de programación principal.
+  \item \textbf{NumPy}: Operaciones numéricas y manejo eficiente de matrices.
+  \item \textbf{Matplotlib}: Generación de visualizaciones y gráficas.
+  \item \textbf{PyYAML}: Lectura de archivos de configuración en formato YAML.
+  \item \textbf{Loguru}: Sistema de \textit{logging} estructurado y configuración simplificada.
+  \item \textbf{Pytest}: Framework para pruebas unitarias y de integración.
+\end{itemize}
+
+\subsection{Principios de Diseño SOLID}
+\label{subsec:solid}
+
+La implementación sigue los principios de diseño SOLID para garantizar un código mantenible, extensible y testeable:
+
+\begin{itemize}[leftmargin=2cm]
+  \item \textbf{S -- Responsabilidad Única (\textit{Single Responsibility}):} Cada clase tiene una única responsabilidad. Por ejemplo, la clase \texttt{ACSVei} se encarga exclusivamente de la minimización de vehículos, mientras que \texttt{ACSTime} maneja la minimización de distancia.
+  \item \textbf{O -- Abierto/Cerrado (\textit{Open/Closed}):} El sistema está abierto a extensión (nuevas estrategias de inserción, nuevos operadores de búsqueda local) pero cerrado a modificación del código existente.
+  \item \textbf{L -- Sustitución de Liskov (\textit{Liskov Substitution}):} Las colonias ACS-VEI y ACS-TIME implementan una interfaz común que permite sustituir una por otra sin alterar el comportamiento del sistema.
+  \item \textbf{I -- Segregación de Interfaces (\textit{Interface Segregation}):} Se definen interfaces específicas y cohesivas en lugar de interfaces monolíticas.
+  \item \textbf{D -- Inversión de Dependencias (\textit{Dependency Inversion}):} Los módulos de alto nivel no dependen de módulos de bajo nivel; ambos dependen de abstracciones.
+\end{itemize}
+
+\subsection{Estructura del Proyecto}
+\label{subsec:estructura}
+
+La estructura del proyecto sigue una organización modular:
+
+\begin{table}[H]
+  \centering
+  \caption{Estructura de directorios del proyecto MACS-VRPTW.}
+  \label{tab:estructura}
+  \begin{tabularx}{\textwidth}{lX}
+    \toprule
+    \textbf{Directorio/Archivo} & \textbf{Descripción} \\
+    \midrule
+    \texttt{main.py}          & Punto de entrada principal del programa. \\
+    \texttt{config/}          & Archivos de configuración YAML con parámetros del algoritmo. \\
+    \texttt{src/}             & Código fuente del algoritmo (modelos, colonias, operadores). \\
+    \texttt{data/}            & Instancias de Solomon en formato estándar. \\
+    \texttt{results/}         & Resultados de ejecución (soluciones, métricas). \\
+    \texttt{Figures/}         & Visualizaciones generadas (gráficas, rutas). \\
+    \texttt{LaTeX/}           & Documentación \LaTeX\ del proyecto. \\
+    \texttt{logs/}            & Archivos de \textit{log} generados por Loguru. \\
+    \texttt{tests/}           & Pruebas unitarias y de integración. \\
+    \texttt{requirements.txt} & Dependencias del proyecto. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Configuración YAML}
+\label{subsec:yaml}
+
+Los parámetros del algoritmo se gestionan mediante archivos de configuración YAML, lo que permite modificar el comportamiento del sistema sin alterar el código fuente. Los parámetros principales incluyen:
+
+\begin{table}[H]
+  \centering
+  \caption{Parámetros principales del algoritmo configurables vía YAML.}
+  \label{tab:parametros}
+  \begin{tabular}{llp{6cm}}
+    \toprule
+    \textbf{Parámetro} & \textbf{Valor típico} & \textbf{Descripción} \\
+    \midrule
+    $q_0$    & 0.9   & Probabilidad de explotación en la regla de transición. \\
+    $\beta$  & 1     & Peso de la información heurística. \\
+    $\rho$   & 0.1   & Coeficiente de evaporación de feromona. \\
+    $m$      & 10    & Número de hormigas por colonia. \\
+    Iteraciones & 100 & Número máximo de iteraciones. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Sistema de Logging}
+\label{subsec:logging}
+
+Se utiliza la biblioteca \textbf{Loguru} para implementar un sistema de \textit{logging} estructurado que registra:
+\begin{itemize}[leftmargin=2cm]
+  \item Progreso de cada iteración (número de vehículos, distancia actual).
+  \item Mejoras encontradas por cada colonia.
+  \item Eventos de actualización de feromona.
+  \item Tiempos de ejecución de cada componente.
+  \item Errores y advertencias durante la ejecución.
+\end{itemize}
+
+% =============================================================================
+% 6. RESULTADOS
+% =============================================================================
+\section{Resultados}
+\label{sec:resultados}
+
+\subsection{Comparación con el Artículo Original}
+\label{subsec:comparacion_paper}
+
+En el artículo de Gambardella, Taillard y Agazzi~\cite{gambardella1999} se reportan dos conjuntos de resultados para la instancia C208. La Tabla~\ref{tab:comparacion_paper} presenta la comparación entre los resultados del artículo y los obtenidos por nuestra implementación.
+
+\begin{table}[H]
+  \centering
+  \caption{Comparación de resultados con el artículo original~\cite{gambardella1999} -- Tabla 1 del artículo.}
+  \label{tab:comparacion_paper}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Métrica} & \textbf{Paper (Tabla 1)} & \textbf{Nuestra impl.} & \textbf{Diferencia (\%)} \\
+    \midrule
+    Número de vehículos ($NV$) & 3.00  & 3.00 & 0.00 \\
+    Distancia total ($TD$)     & 592.97 & 588.32 & $-0.78$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Comparación de resultados con el artículo original~\cite{gambardella1999} -- Tabla 2 del artículo.}
+  \label{tab:comparacion_paper2}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Métrica} & \textbf{Paper (Tabla 2)} & \textbf{Nuestra impl.} & \textbf{Diferencia (\%)} \\
+    \midrule
+    Número de vehículos ($NV$) & 3.00  & 3.00 & 0.00 \\
+    Distancia total ($TD$)     & 589.86 & 588.32 & $-0.26$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Comparación con la Mejor Solución Conocida (BKS)}
+\label{subsec:comparacion_bks}
+
+La Tabla~\ref{tab:comparacion_bks} presenta la comparación de nuestros resultados con la BKS reportada por SINTEF~\cite{sintef2024}.
+
+\begin{table}[H]
+  \centering
+  \caption{Comparación de resultados con la mejor solución conocida (BKS) para C208.}
+  \label{tab:comparacion_bks}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Métrica} & \textbf{BKS (SINTEF)} & \textbf{Nuestra impl.} & \textbf{Gap (\%)} \\
+    \midrule
+    Número de vehículos ($NV$) & 3      & 3 & 0.00 \\
+    Distancia total ($TD$)     & 588.32 & 588.32 & 0.00 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Visualización de Resultados}
+\label{subsec:visualizacion}
+
+La Figura~\ref{fig:routes_ours} muestra las rutas obtenidas por nuestra implementación para la instancia C208.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{c208_routes_ours.png}
+  \caption{Rutas obtenidas por nuestra implementación del MACS-VRPTW para la instancia C208.}
+  \label{fig:routes_ours}
+\end{figure}
+
+La Figura~\ref{fig:comparison_chart} presenta una comparación gráfica entre los resultados del artículo original, la BKS y nuestra implementación.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.80\textwidth]{comparison_chart.png}
+  \caption{Comparación gráfica de resultados: artículo original~\cite{gambardella1999}, BKS~\cite{sintef2024} y nuestra implementación.}
+  \label{fig:comparison_chart}
+\end{figure}
+
+% =============================================================================
+% 7. ANÁLISIS
+% =============================================================================
+\section{Análisis}
+\label{sec:analisis}
+
+\subsection{Discusión de Resultados}
+\label{subsec:discusion}
+
+Nuestra implementación del algoritmo MACS-VRPTW obtuvo resultados sobresalientes para la instancia C208. En las 3 corridas experimentales realizadas con semillas diferentes (42, 43, 44), el algoritmo encontró consistentemente la mejor solución conocida (BKS): \textbf{3 vehículos con una distancia total de 588.32}, lo que representa un gap de 0.00\% respecto a la BKS y una mejora de $-0.78\%$ respecto a la Tabla 1 del artículo original ($TD = 592.97$) y $-0.26\%$ respecto a la Tabla 2 ($TD = 589.86$).
+
+La convergencia fue rápida: en la corrida 1 (seed=42), el algoritmo encontró la solución óptima en solo 2 iteraciones, partiendo de una solución inicial de nearest-neighbor con 6 vehículos y distancia 1145.23. Las corridas 2 y 3 convergieron en 5 y 9 iteraciones respectivamente, demostrando la robustez del algoritmo ante diferentes semillas aleatorias.
+
+Las tres rutas de la mejor solución encontrada coinciden exactamente con las de la BKS de Hasle y Kloster (2003): la Ruta 1 con 35 clientes (distancia 235.53), la Ruta 2 con 33 clientes (distancia 195.13) y la Ruta 3 con 32 clientes (distancia 157.66), cubriendo los 100 clientes con demandas totales de 620, 630 y 560 respectivamente, todas dentro del límite de capacidad de 700.
+
+\subsection{Análisis de Convergencia}
+\label{subsec:convergencia}
+
+La Figura~\ref{fig:convergence} muestra la curva de convergencia del algoritmo, ilustrando cómo evoluciona la calidad de la mejor solución encontrada a lo largo de las iteraciones.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.80\textwidth]{convergence.png}
+  \caption{Curva de convergencia del algoritmo MACS-VRPTW para la instancia C208, mostrando la evolución de la distancia total de la mejor solución en función del número de iteraciones.}
+  \label{fig:convergence}
+\end{figure}
+
+La curva de convergencia muestra un patrón característico de la instancia C208 (Clustered tipo 2): una caída dramática en las primeras iteraciones (de 1145.23 a 588.32 en menos de 10 iteraciones), seguida de estabilización. Esto se explica por la estructura geográfica agrupada de los clientes, que facilita la formación rápida de rutas eficientes una vez que la búsqueda local Or-opt reorganiza los clientes dentro de cada cluster. El tiempo promedio de ejecución fue de 373 segundos ($\approx$6.2 minutos) por corrida.
+
+\subsection{Sensibilidad a Parámetros}
+\label{subsec:sensibilidad}
+
+Se utilizaron los parámetros recomendados por el artículo original: $m=5$ hormigas, $q_0=0.9$, $\beta=1$, $\rho=0.1$, con $\tau_0 = 1/(n \cdot J_{\psi^{h}})$ donde $J_{\psi^{h}}$ es el costo de la solución inicial de nearest-neighbor. Los parámetros clave que influyen en el rendimiento del algoritmo son:
+
+\begin{itemize}[leftmargin=2cm]
+  \item \textbf{$q_0$ (probabilidad de explotación):} Valores altos de $q_0$ (cercanos a 1) favorecen la explotación de las mejores soluciones conocidas, lo que puede llevar a convergencia prematura. Valores bajos favorecen la exploración, lo que puede reducir la velocidad de convergencia pero mejorar la diversidad de soluciones.
+  \item \textbf{$\beta$ (peso heurístico):} Controla la importancia de la información heurística $\eta_{ij}$ respecto a la feromona $\tau_{ij}$. El artículo original utiliza $\beta = 1$, lo que otorga igual peso a ambas fuentes de información.
+  \item \textbf{$\rho$ (evaporación):} Controla la velocidad de actualización de la feromona. Valores altos de $\rho$ provocan una mayor modificación de la feromona en cada actualización, mientras que valores bajos mantienen más estable la estructura de feromona.
+  \item \textbf{$m$ (número de hormigas):} Más hormigas permiten una exploración más amplia del espacio de soluciones pero incrementan el tiempo de cómputo por iteración.
+\end{itemize}
+
+% =============================================================================
+% 8. CONCLUSIONES POR INTEGRANTE
+% =============================================================================
+\section{Conclusiones por Integrante}
+\label{sec:conclusiones}
+
+\subsection{Javier Augusto Rebull Saucedo (263483)}
+\label{subsec:conclusion_javier}
+
+% TODO: PERSONALIZAR -- Javier: escribe aquí tu conclusión personal.
+
+La implementación del algoritmo MACS-VRPTW representó un reto significativo que permitió profundizar en el entendimiento de las metaheurísticas basadas en colonias de hormigas y su aplicación a problemas de optimización combinatoria del mundo real. A través de este proyecto se pudieron identificar los mecanismos clave que hacen efectivo al enfoque ACO: la cooperación entre colonias, el balance entre exploración y explotación, y la importancia de los operadores de búsqueda local como complemento a la construcción guiada por feromona.
+
+% TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
+
+\subsection{Yazmín Ivonne Flores Martínez (261548)}
+\label{subsec:conclusion_yazmin}
+
+% TODO: PERSONALIZAR -- Yazmín: escribe aquí tu conclusión personal.
+
+El desarrollo de este proyecto permitió comprender a profundidad cómo las metaheurísticas bio-inspiradas pueden aplicarse eficazmente a problemas logísticos complejos como el VRPTW. La naturaleza multiobjetivo del MACS-VRPTW, donde se optimizan simultáneamente el número de vehículos y la distancia total, ilustra la importancia de diseñar algoritmos que manejen múltiples criterios de optimización de manera integrada.
+
+% TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
+
+\subsection{Esther Nohemí Encinas Guerrero (261536)}
+\label{subsec:conclusion_esther}
+
+% TODO: PERSONALIZAR -- Esther: escribe aquí tu conclusión personal.
+
+Este proyecto proporcionó una experiencia valiosa en la implementación de algoritmos metaheurísticos avanzados y su aplicación a problemas de optimización con restricciones del mundo real. La instancia C208 de Solomon resultó ser un caso de estudio interesante dado que, al tratarse de clientes agrupados en clusters con ventanas de tiempo amplias, permite observar cómo el algoritmo MACS-VRPTW aprovecha la estructura del problema para construir rutas eficientes.
+
+% TODO: PERSONALIZAR -- Agregar reflexiones específicas sobre tu contribución al proyecto.
+
+% =============================================================================
+% 9. REFERENCIAS
+% =============================================================================
+\newpage
+\section*{Referencias}
+\addcontentsline{toc}{section}{Referencias}
+
+\begin{thebibliography}{10}
+
+\bibitem{gambardella1999}
+L.~M. Gambardella, É.~Taillard y G.~Agazzi,
+``MACS-VRPTW: A Multiple Ant Colony System for Vehicle Routing Problems with Time Windows,''
+en \textit{New Ideas in Optimization}, D. Corne, M. Dorigo y F. Glover, Eds.
+McGraw-Hill, 1999, pp. 63--76.
+
+\bibitem{dorigo1997}
+M.~Dorigo y L.~M. Gambardella,
+``Ant Colony System: A Cooperative Learning Approach to the Traveling Salesman Problem,''
+\textit{IEEE Transactions on Evolutionary Computation}, vol.~1, no.~1, pp. 53--66, 1997.
+
+\bibitem{dorigo1996}
+M.~Dorigo, V.~Maniezzo y A.~Colorni,
+``Ant System: Optimization by a Colony of Cooperating Agents,''
+\textit{IEEE Transactions on Systems, Man, and Cybernetics -- Part B: Cybernetics}, vol.~26, no.~1, pp. 29--41, 1996.
+
+\bibitem{solomon1987}
+M.~M. Solomon,
+``Algorithms for the Vehicle Routing and Scheduling Problems with Time Window Constraints,''
+\textit{Operations Research}, vol.~35, no.~2, pp. 254--265, 1987.
+
+\bibitem{porras2026material}
+R.~G. Porras~Alaniz,
+``Material de clase: Optimización por Colonias de Hormigas (ACO),''
+Maestría en Inteligencia Artificial y Analítica de Datos, Universidad Autónoma de Ciudad Juárez, 2026.
+
+\bibitem{porras2026actividad}
+R.~G. Porras~Alaniz,
+``Actividad: Implementación MACS-VRPTW,''
+Maestría en Inteligencia Artificial y Analítica de Datos, Universidad Autónoma de Ciudad Juárez, 2026.
+
+\bibitem{sintef2024}
+SINTEF,
+``VRPTW Benchmark Problems -- 100 Customers,''
+[En línea]. Disponible: \url{https://www.sintef.no/projectweb/top/vrptw/solomon-benchmark/100-customers/}.
+[Accedido: 11 de marzo de 2026].
+
+\bibitem{hasle2007}
+G.~Hasle, K.-A. Lie y E.~Quak,
+\textit{Geometric Modelling, Numerical Simulation, and Optimization: Applied Mathematics at SINTEF}.
+Springer, 2007.
+
+\bibitem{taillard1997}
+É.~Taillard, P.~Badeau, M.~Gendreau, F.~Guertin y J.-Y. Potvin,
+``A Tabu Search Heuristic for the Vehicle Routing Problem with Soft Time Windows,''
+\textit{Transportation Science}, vol.~31, no.~2, pp. 170--186, 1997.
+
+\bibitem{rochat1995}
+Y.~Rochat y É.~Taillard,
+``Probabilistic Diversification and Intensification in Local Search for Vehicle Routing,''
+\textit{Journal of Heuristics}, vol.~1, no.~1, pp. 147--167, 1995.
+
+\end{thebibliography}
+
+\end{document}

@@ -6,195 +6,153 @@
 <h3 align="center">Multiple Ant Colony System for Vehicle Routing Problems with Time Windows</h3>
 
 <p align="center">
-  <strong>Actividad Práctica — Optimización Inteligente</strong><br/>
-  Maestría en Inteligencia Artificial y Analítica de Datos (MIAAD)<br/>
-  Universidad Autónoma de Ciudad Juárez
+  <strong>Actividad Practica  - Optimizacion Inteligente</strong><br/>
+  Maestria en Inteligencia Artificial y Analitica de Datos (MIAAD)<br/>
+  Universidad Autonoma de Ciudad Juarez
 </p>
 
 <p align="center">
-  <a href="#descripción-del-problema"><img src="https://img.shields.io/badge/Problema-VRPTW-003366?style=for-the-badge" alt="VRPTW"/></a>
-  <a href="#algoritmo"><img src="https://img.shields.io/badge/Algoritmo-MACS--VRPTW-C8962E?style=for-the-badge" alt="MACS"/></a>
-  <a href="#instancias-de-benchmark"><img src="https://img.shields.io/badge/Benchmark-Solomon-2E8B57?style=for-the-badge" alt="Solomon"/></a>
+  <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
+  <img src="https://img.shields.io/badge/Problema-VRPTW-003366?style=for-the-badge" alt="VRPTW"/>
+  <img src="https://img.shields.io/badge/Algoritmo-MACS--VRPTW-C8962E?style=for-the-badge" alt="MACS"/>
+  <img src="https://img.shields.io/badge/Benchmark-Solomon_C208-2E8B57?style=for-the-badge" alt="Solomon"/>
 </p>
 
 ---
 
-## 📋 Información General
+## Informacion General
 
 | Campo | Detalle |
 |:------|:--------|
-| **Materia** | Optimización Inteligente |
-| **Profesor** | Mtro. Raúl Gibrán Porras Alaniz |
-| **Programa** | MIAAD — UACJ |
-| **Modalidad** | Trabajo en equipo (4 integrantes) |
-| **Entrega** | Presentación en vivo (siguiente clase) |
+| **Materia** | Optimizacion Inteligente |
+| **Profesor** | Mtro. Raul Gibran Porras Alaniz |
+| **Programa** | MIAAD - UACJ |
+| **Instancia** | C208 (Solomon, 100 clientes, Clustered tipo 2) |
+| **BKS** | 3 vehiculos, 588.32 distancia |
+| **Entrega** | 16 de marzo de 2026 |
 
 ---
 
-## 📖 Descripción del Problema
+## Equipo
 
-El **Vehicle Routing Problem with Time Windows (VRPTW)** es un problema clásico de optimización combinatoria NP-hard que consiste en diseñar un conjunto óptimo de rutas para una flota de vehículos de capacidad homogénea que deben atender a un grupo de clientes, cada uno con:
-
-- **Ubicación geográfica** (coordenadas `x`, `y`)
-- **Demanda** de producto (`qᵢ ≤ Q`)
-- **Ventana de tiempo** `[bᵢ, eᵢ]` en la que debe iniciarse el servicio
-- **Tiempo de servicio** (`sᵢ`)
-
-Todas las rutas inician y terminan en un **depósito central** con su propio horario de operación `[b₀, e₀]`.
-
-### Objetivos jerárquicos
-
-1. **Minimizar** el número de vehículos utilizados
-2. **Minimizar** la distancia total recorrida
+| Nombre | Matricula | Rol |
+|--------|-----------|-----|
+| **Javier Augusto Rebull Saucedo** | 263483 | Lead Developer & Documentacion |
+| **Yazmin Ivonne Flores Martinez** | 261548 | Analisis algoritmico & Validacion |
+| **Esther Nohemi Encinas Guerrero** | 261536 | Experimentacion & Benchmarking |
 
 ---
 
-## 🐜 Algoritmo
-
-### MACS-VRPTW (Gambardella, Taillard & Agazzi, 1999)
-
-El **Multiple Ant Colony System** organiza jerárquicamente dos colonias de hormigas artificiales que cooperan intercambiando información a través de feromonas:
-
-```
-┌──────────────────────────────────────────┐
-│            MACS-VRPTW Controller         │
-│                                          │
-│   ┌─────────────┐   ┌─────────────────┐ │
-│   │  ACS-VEI    │   │   ACS-TIME      │ │
-│   │ (Minimiza   │◄─►│  (Minimiza      │ │
-│   │  vehículos) │   │   distancia)    │ │
-│   └─────────────┘   └─────────────────┘ │
-│          │                   │           │
-│          └───────┬───────────┘           │
-│                  ▼                       │
-│        Intercambio de feromonas          │
-│        + Búsqueda local                  │
-└──────────────────────────────────────────┘
-```
-
-**Componentes clave:**
-
-- **ACS-VEI:** Colonia enfocada en minimizar el número de vehículos/tours
-- **ACS-TIME:** Colonia enfocada en minimizar la distancia/tiempo total de viaje
-- **Regla de transición pseudo-aleatoria proporcional** para la construcción de soluciones
-- **Actualización global y local de feromonas** para intensificación y diversificación
-- **Procedimientos de búsqueda local** para mejorar la calidad de las soluciones
-
-### Referencia del artículo
-
-> Gambardella, L. M., Taillard, É., & Agazzi, G. (1999). *MACS-VRPTW: A Multiple Ant Colony System for Vehicle Routing Problems with Time Windows.* In D. Corne, M. Dorigo & F. Glover (Eds.), New Ideas in Optimization (pp. 63–76). McGraw-Hill, London.
-
----
-
-## 📦 Instancias de Benchmark
-
-Se utilizan las instancias clásicas de **Solomon (1987)** con 100 clientes, organizadas en 6 categorías:
-
-| Tipo | Distribución geográfica | Horizonte | Clientes/ruta |
-|:-----|:------------------------|:----------|:--------------|
-| **C1** | Agrupada (clustered) | Corto | 5–10 |
-| **C2** | Agrupada (clustered) | Largo | 30+ |
-| **R1** | Aleatoria (random) | Corto | 5–10 |
-| **R2** | Aleatoria (random) | Largo | 30+ |
-| **RC1** | Mixta (random + clustered) | Corto | 5–10 |
-| **RC2** | Mixta (random + clustered) | Largo | 30+ |
-
-### Formato de las instancias
-
-```
-CUST_NO.  XCOORD.  YCOORD.  DEMAND  READY_TIME  DUE_DATE  SERVICE_TIME
-    0       40       50        0        0          230          0
-    1       45       68       10       912          967         90
-    2       42       66       10      825           870         90
-   ...
-```
-
-- **Fila 0:** Depósito (demanda = 0)
-- **Filas 1–100:** Clientes con sus respectivos atributos
-
-### Fuentes
-
-- 🔗 [Solomon's Benchmarks (SINTEF)](https://www.sintef.no/projectweb/top/vrptw/solomon-benchmark/)
-- 🔗 [Solomon's Original Page](http://w.cba.neu.edu/~msolomon/problems.htm)
-- 🔗 [Resultados best-known (100 clientes)](https://www.sintef.no/projectweb/top/vrptw/100-customers/)
-
----
-
-## 🗂️ Estructura del Repositorio
-
-```
-MIAAD_SO_MACS-VRPTW/
-├── README.md
-├── docs/
-│   └── paper.pdf                  # Artículo de referencia
-├── instances/
-│   └── solomon_100/               # Instancias de benchmark
-│       ├── C101.txt
-│       ├── R101.txt
-│       └── ...
-├── src/
-│   ├── macs_vrptw.py              # Implementación principal
-│   ├── acs_vei.py                 # Colonia ACS-VEI
-│   ├── acs_time.py                # Colonia ACS-TIME
-│   ├── local_search.py            # Procedimientos de búsqueda local
-│   └── utils.py                   # Utilidades y parseo de instancias
-├── results/
-│   └── ...                        # Resultados experimentales
-├── presentation/
-│   └── ...                        # Presentación del equipo
-└── requirements.txt
-```
-
-> **Nota:** Esta estructura es sugerida. Cada equipo puede adaptarla según su implementación.
-
----
-
-## 🚀 Inicio Rápido
+## Inicio Rapido
 
 ```bash
 # Clonar el repositorio
 git clone https://github.com/jrebull/MIAAD_SO_MACS-VRPTW.git
 cd MIAAD_SO_MACS-VRPTW
 
-# Instalar dependencias
+# Crear ambiente virtual e instalar dependencias
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 
-# Ejecutar el algoritmo sobre una instancia
-python src/macs_vrptw.py --instance instances/solomon_100/C101.txt
+# Ejecutar el algoritmo
+python main.py
+
+# Generar figuras
+python generate_figures.py
+
+# Lanzar dashboard interactivo
+streamlit run streamlit_app.py
+
+# Ejecutar tests
+pytest tests/ -v
 ```
 
 ---
 
-## ✅ Entregables
+## Estructura del Proyecto
 
-| # | Entregable | Descripción |
-|:-:|:-----------|:------------|
-| 1 | **Código fuente** | Implementación completa y funcional del MACS-VRPTW |
-| 2 | **Presentación** | Explicación del algoritmo, implementación, instancia y resultados |
-| 3 | **Portada en Aula Virtual** | Cada integrante sube la portada como registro de participación |
-| 4 | **Exposición en vivo** | Presentación frente al grupo el día de entrega |
+```
+MIAAD_SO_MACS-VRPTW/
+├── CLAUDE.md                          # Contexto para Claude Code
+├── README.md                          # Este archivo
+├── requirements.txt                   # Dependencias Python
+├── main.py                            # Script principal de ejecucion
+├── streamlit_app.py                   # Dashboard interactivo
+├── generate_figures.py                # Generador de figuras
+├── config/
+│   ├── default.yaml                   # Configuracion por defecto
+│   └── experiments/
+│       └── c208.yaml                  # Override para C208
+├── src/
+│   ├── models/
+│   │   ├── customer.py                # Dataclass Customer
+│   │   ├── instance.py                # Modelo Instance + matriz distancias
+│   │   └── solution.py                # Route y Solution
+│   ├── parsers/
+│   │   └── solomon_parser.py          # Parser instancias Solomon
+│   ├── algorithm/
+│   │   ├── ant.py                     # new_active_ant (Figure 6)
+│   │   ├── colony_base.py             # ABC ColonyBase (SOLID: DIP)
+│   │   ├── acs_time.py                # Colonia ACS-TIME (Figure 3)
+│   │   ├── acs_vei.py                 # Colonia ACS-VEI (Figure 4)
+│   │   ├── pheromone.py               # Matriz de feromonas (Eq. 2, 3)
+│   │   ├── macs_vrptw.py              # Controlador MACS-VRPTW (Figure 2)
+│   │   └── local_search/
+│   │       ├── base.py                # ABC LocalSearchStrategy (SOLID: OCP)
+│   │       ├── cross_exchange.py      # CROSS exchange
+│   │       └── or_opt.py              # Or-opt (1, 2, 3 clientes)
+│   ├── heuristics/
+│   │   └── nearest_neighbor.py        # Heuristica vecino mas cercano
+│   ├── evaluation/
+│   │   ├── validator.py               # Validacion de factibilidad
+│   │   ├── metrics.py                 # Metricas de evaluacion
+│   │   └── benchmark.py               # Comparacion vs BKS y paper
+│   └── utils/
+│       ├── config_loader.py           # Carga configs YAML
+│       ├── logger.py                  # Setup loguru
+│       └── seed.py                    # Control de semillas
+├── data/
+│   ├── c208.txt                       # Instancia C208
+│   └── c208_bks.txt                   # Best-Known Solution
+├── References/                        # Documentos de referencia
+├── Figures/                           # Figuras generadas (300 DPI)
+├── results/                           # Resultados JSON
+├── LaTeX/
+│   └── main.tex                       # Documento academico
+└── tests/
+    ├── test_parser.py
+    ├── test_solution.py
+    └── test_pheromone.py
+```
 
 ---
 
-## 👥 Equipo
+## Algoritmo MACS-VRPTW
 
-| Integrante | Rol |
-|:-----------|:----|
-| | |
-| | |
-| | |
-| | |
+Implementacion fiel del algoritmo de **Gambardella, Taillard y Agazzi (1999)** con dos colonias ACS cooperativas:
+
+- **ACS-VEI**: Minimiza el numero de vehiculos (opera con v-1 vehiculos)
+- **ACS-TIME**: Minimiza la distancia total (con busqueda local)
+
+Parametros del articulo: `m=10, q0=0.9, beta=1, rho=0.1`
+
+### Principios de diseno
+
+- **SOLID**: Interfaces abstractas, inversion de dependencias, principio abierto/cerrado
+- **Clean Code**: Nombres descriptivos, funciones pequenas, sin magic numbers
+- **MLOps**: Configuracion YAML, logging estructurado, semillas controladas, resultados JSON
 
 ---
 
-## 📚 Referencias
+## Referencias
 
-- Gambardella, L. M., Taillard, É., & Agazzi, G. (1999). *MACS-VRPTW: A Multiple Ant Colony System for Vehicle Routing Problems with Time Windows.* New Ideas in Optimization, 63–76.
-- Solomon, M. M. (1987). *Algorithms for the Vehicle Routing and Scheduling Problem with Time Window Constraints.* Operations Research, 35(2), 254–265.
-- Dorigo, M. & Gambardella, L. M. (1997). *Ant Colony System: A Cooperative Learning Approach to the Traveling Salesman Problem.* IEEE Trans. Evol. Comput., 1(1), 53–66.
+1. Gambardella, L. M., Taillard, E., & Agazzi, G. (1999). *MACS-VRPTW: A Multiple Ant Colony System for Vehicle Routing Problems with Time Windows.* New Ideas in Optimization, McGraw-Hill.
+2. Dorigo, M. & Gambardella, L. M. (1997). *Ant Colony System: A Cooperative Learning Approach to the Traveling Salesman Problem.* IEEE Trans. Evol. Comput.
+3. Solomon, M. M. (1987). *Algorithms for the Vehicle Routing and Scheduling Problem with Time Window Constraints.* Operations Research.
 
 ---
 
 <p align="center">
-  <sub>MIAAD — Universidad Autónoma de Ciudad Juárez — Optimización Inteligente — 2026</sub>
+  <sub>MIAAD - Universidad Autonoma de Ciudad Juarez - Optimizacion Inteligente - 2026</sub>
 </p>

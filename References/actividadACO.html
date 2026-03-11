@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad Práctica: Implementación de MACS-VRPTW</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* --- PALETA DE COLORES --- */
+        :root {
+            --bg-color: #FFFFFF;       
+            --text-color: #1A2130;     
+            --highlight-color: #5A72A0; 
+            --extra-color: #83B4FF;    
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif; 
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            font-size: 19px;
+        }
+
+        .article-column {
+            max-width: 760px; 
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            font-weight: 700;
+            margin-top: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            line-height: 1.1;
+            margin-top: 0;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            text-align: center;
+            font-size: 1.3em;
+            color: var(--highlight-color);
+            margin-bottom: 60px;
+            font-weight: 300;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid var(--extra-color);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: var(--highlight-color);
+            margin-top: 1.5em;
+        }
+
+        p {
+            margin-bottom: 1.5em;
+        }
+
+        strong {
+            color: var(--highlight-color);
+            font-weight: 700;
+        }
+
+        .highlight-box {
+            background-color: rgba(131, 180, 255, 0.08); 
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid var(--extra-color);
+        }
+
+        .highlight-box h3 {
+            margin-top: 0;
+            color: var(--text-color);
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 2em;
+        }
+
+        li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        li::marker {
+            color: var(--extra-color);
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.8em;
+            color: var(--highlight-color);
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="article-column">
+        <h1>Actividad Práctica: Análisis e Implementación de MACS-VRPTW</h1>
+        <p class="subtitle">Reto de Programación: Arquitecturas de Múltiples Colonias para Problemas de Ruteo con Ventanas de Tiempo</p>
+
+        <h2>Objetivo de la Actividad</h2>
+        <p>El propósito de este reto es comprender, codificar y validar una arquitectura avanzada de la metaheurística de Optimización por Colonia de Hormigas (ACO) para resolver problemas de optimización multiobjetivo. Replicarán el modelo de múltiples colonias propuesto en la literatura científica y validarán la robustez de su código comparándolo con resultados estandarizados.</p>
+
+        <div class="highlight-box">
+            <h3>Dinámica de Trabajo</h3>
+            <ul>
+                <li><strong>Equipos:</strong> La actividad se desarrollará en equipos de <strong>4 personas</strong>.</li>
+                <li><strong>Herramientas Libres:</strong> Tienen total libertad para seleccionar el lenguaje de programación, el paradigma (orientado a objetos, funcional, etc.), las librerías y el entorno de desarrollo que consideren más eficiente.</li>
+            </ul>
+        </div>
+
+        <h2>Fase 1: Lectura y Análisis de la Arquitectura Base</h2>
+        <p>Todos los equipos deberán leer, debatir y analizar a profundidad el siguiente artículo científico fundacional:</p>
+        <blockquote>
+            <p><strong>Gambardella, L. M., Taillard, É., & Agazzi, G. (1999).</strong> <em>MACS-VRPTW: A Multiple Ant Colony System for Vehicle Routing Problems with Time Windows.</em> New Ideas in Optimization, McGraw-Hill.</p>
+        </blockquote>
+
+        
+
+        <h3>¿De qué trata esta variante?</h3>
+        <p>A diferencia del ACO clásico enfocado en una sola meta, el MACS-VRPTW ataca el Problema de Enrutamiento de Vehículos con Ventanas de Tiempo (VRPTW) utilizando una jerarquía de <strong>dos colonias de hormigas artificiales</strong> que se ejecutan y colaboran entre sí:</p>
+        <ol>
+            <li><strong>ACS-VEI (Colonia 1):</strong> Su objetivo principal y restrictivo es minimizar el número de vehículos necesarios para atender a todos los clientes.</li>
+            <li><strong>ACS-TIME (Colonia 2):</strong> Su objetivo es optimizar las rutas factibles encontradas para minimizar la distancia total recorrida.</li>
+        </ol>
+        <p>El reto de ingeniería radica en cómo ambas colonias se comunican y cooperan de manera indirecta intercambiando información a través de la actualización de una matriz global de feromonas.</p>
+
+        <h2>Fase 2: Instancias de Prueba (Benchmarks)</h2>
+        <p>Para validar matemáticamente que su algoritmo funciona de manera correcta, utilizaremos las instancias estandarizadas creadas por <strong>Solomon</strong> para el VRPTW.</p>
+        
+        <p>Estas instancias se dividen en tres categorías geográficas según la distribución espacial de los clientes:</p>
+        <ul>
+            <li><strong>Conjuntos C (Clustered):</strong> Clientes agrupados geográficamente.</li>
+            <li><strong>Conjuntos R (Random):</strong> Clientes distribuidos de forma aleatoria.</li>
+            <li><strong>Conjuntos RC (Mixed):</strong> Una mezcla de clientes agrupados y aleatorios.</li>
+        </ul>
+
+        <p><strong>Asignación:</strong> Para garantizar la diversidad en la evaluación del grupo, <strong>cada equipo deberá seleccionar una instancia diferente</strong> del benchmark de Solomon (ej. C101, R202, RC105). <em>Deberán registrar su instancia seleccionada previamente con el profesor para evitar duplicados.</em></p>
+
+        <h2>Fase 3: Entregable y Defensa Técnica</h2>
+        <p>Al finalizar el desarrollo y la fase de pruebas experimentales, cada equipo realizará una presentación técnica frente al grupo. La exposición debe cubrir obligatoriamente los siguientes rubros:</p>
+
+        <ul>
+            <li><strong>A. Arquitectura Algorítmica:</strong> Explicar a nivel de software cómo resolvieron el reto de programar dos colonias concurrentes. ¿Cómo estructuraron sus clases u objetos? ¿Cómo manejaron la memoria compartida (feromonas)?</li>
+            <li><strong>B. Operadores Matemáticos:</strong> Detallar cómo adaptaron la regla de transición de estado y el depósito de feromonas para respetar rigurosamente las "ventanas de tiempo" (restricciones duras) de cada cliente.</li>
+            <li><strong>C. Demostración Práctica:</strong> Ejecutar su código en vivo resolviendo la instancia de Solomon que les fue asignada, mostrando la convergencia del algoritmo.</li>
+            <li><strong>D. Análisis Comparativo:</strong> Presentar una tabla comparativa contrastando el rendimiento de su réplica (número de vehículos obtenidos y distancia total recorrida) contra los resultados experimentales originales publicados en el artículo para esa misma instancia.</li>
+        </ul>
+
+        <div class="footer">
+            Actividad diseñada para el módulo de Metaheurísticas y Optimización Inteligente.
+        </div>
+    </div>
+
+</body>
+</html>
