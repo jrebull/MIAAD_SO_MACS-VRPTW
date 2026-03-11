@@ -37,10 +37,10 @@
 
 | Nombre | Matricula | Rol |
 |--------|-----------|-----|
-| **Esther Nohemi Encinas Guerrero** | 261536 | Experimentacion & Benchmarking |
-| **Javier Augusto Rebull Saucedo** | 263483 | Lead Developer & Documentacion |
-| **Jesus Alejandro Gutierrez Araiza** | 261537 | Demostracion & Resultados |
-| **Yazmin Ivonne Flores Martinez** | 261548 | Analisis algoritmico & Validacion |
+| **Esther Nohemi Encinas Guerrero** | 261536 | MIAAD Student |
+| **Javier Augusto Rebull Saucedo** | 263483 | MIAAD Student |
+| **Jesus Alejandro Gutierrez Araiza** | 261537 | MIAAD Student |
+| **Yazmin Ivonne Flores Martinez** | 261548 | MIAAD Student |
 
 ---
 
