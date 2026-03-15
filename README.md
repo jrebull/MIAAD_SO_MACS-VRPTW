@@ -16,6 +16,7 @@
   <img src="https://img.shields.io/badge/Problema-VRPTW-003366?style=for-the-badge" alt="VRPTW"/>
   <img src="https://img.shields.io/badge/Algoritmo-MACS--VRPTW-C8962E?style=for-the-badge" alt="MACS"/>
   <img src="https://img.shields.io/badge/Benchmark-Solomon_C208-2E8B57?style=for-the-badge" alt="Solomon"/>
+  <img src="https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit"/>
 </p>
 
 ---
@@ -113,7 +114,23 @@ streamlit run streamlit_app.py
 
 Se abrira automaticamente en tu navegador en `http://localhost:8501`. Para detener el dashboard, presiona `Ctrl + C` en la terminal.
 
-### Paso 8: Ejecutar tests
+### Paso 8: Demo en vivo (standalone)
+
+```bash
+streamlit run streamlit_demo.py
+```
+
+Abre una pagina independiente con la demo interactiva del algoritmo (Plotly, parametros ajustables, convergencia en tiempo real).
+
+### Paso 9: Demo en vivo (matplotlib)
+
+```bash
+python demo_live.py
+```
+
+Abre una ventana matplotlib con la ejecucion del algoritmo en tiempo real, mapa de rutas, convergencia y log de modulos.
+
+### Paso 10: Ejecutar tests
 
 ```bash
 pytest tests/ -v
@@ -197,7 +214,23 @@ streamlit run streamlit_app.py
 
 Se abrira automaticamente en tu navegador en `http://localhost:8501`. Para detener el dashboard, presiona `Ctrl + C` en la terminal.
 
-### Paso 8: Ejecutar tests
+### Paso 8: Demo en vivo (standalone)
+
+```powershell
+streamlit run streamlit_demo.py
+```
+
+Abre una pagina independiente con la demo interactiva del algoritmo (Plotly, parametros ajustables, convergencia en tiempo real).
+
+### Paso 9: Demo en vivo (matplotlib)
+
+```powershell
+python demo_live.py
+```
+
+Abre una ventana matplotlib con la ejecucion del algoritmo en tiempo real, mapa de rutas, convergencia y log de modulos.
+
+### Paso 10: Ejecutar tests
 
 ```powershell
 pytest tests/ -v
@@ -213,15 +246,37 @@ deactivate
 
 ---
 
+## Demos en Vivo
+
+El proyecto incluye **2 demos** para visualizar el algoritmo ejecutandose en tiempo real:
+
+| Demo | Comando | Descripcion |
+|------|---------|-------------|
+| **Streamlit + Plotly** | `streamlit run streamlit_demo.py` | Pagina interactiva con parametros ajustables en sidebar, metricas con cards HTML, convergencia con subplots apilados, log de modulos y badge BKS |
+| **Matplotlib** | `python demo_live.py` | Ventana nativa con GridSpec, timer en vivo, mapa de rutas animado y grafica de convergencia en dos subplots |
+
+Ambas demos muestran:
+- Mapa de rutas actualizado en cada mejora
+- Grafica de convergencia con dos subplots (distancia + vehiculos)
+- Fase actual del algoritmo (Nearest Neighbor, ACS-VEI, ACS-TIME)
+- Log de modulos .py ejecutados
+- Badge de BKS cuando se alcanza la mejor solucion conocida
+
+---
+
 ## Estructura del Proyecto
 
 ```
 MIAAD_SO_MACS-VRPTW/
 ├── README.md                          # Este archivo
+├── CLAUDE.md                          # Instrucciones para Claude Code
+├── ARCHITECTURE.md                    # Documentacion detallada de arquitectura
 ├── requirements.txt                   # Dependencias Python
-├── main.py                            # Script principal de ejecucion
-├── streamlit_app.py                   # Dashboard interactivo
-├── generate_figures.py                # Generador de figuras
+├── main.py                            # Script principal (3 corridas)
+├── streamlit_app.py                   # Dashboard interactivo (5 tabs: mapa, convergencia, comparacion, detalle, analisis)
+├── streamlit_demo.py                  # Demo en vivo (Streamlit + Plotly interactivo)
+├── demo_live.py                       # Demo en vivo matplotlib (ventana nativa)
+├── generate_figures.py                # Generador de 6 figuras PNG (300 DPI)
 ├── config/
 │   ├── default.yaml                   # Configuracion por defecto
 │   └── experiments/
@@ -277,6 +332,16 @@ Implementacion fiel del algoritmo de **Gambardella, Taillard y Agazzi (1999)** c
 - **ACS-VEI**: Minimiza el numero de vehiculos (opera con v-1 vehiculos)
 - **ACS-TIME**: Minimiza la distancia total (con busqueda local Or-opt)
 
+El controlador `MACS_VRPTW` (Figure 2 del articulo) coordina ambas colonias con callbacks `on_improvement` y `on_iteration` que permiten la visualizacion en tiempo real en las demos.
+
+### Flujo del algoritmo
+
+1. **Solucion inicial**: Nearest Neighbor (vehiculos ilimitados) -> calcula tau_0
+2. **Loop principal**: Alterna ciclos ACS-VEI (reducir vehiculos) y ACS-TIME (minimizar distancia)
+3. **ACS-VEI**: Intenta servir 100 clientes con v-1 vehiculos usando feromonas + regla pseudo-aleatoria
+4. **ACS-TIME**: Con vehiculos fijos, optimiza distancia con Or-opt (reordena segmentos 1-3 clientes)
+5. **Criterio de paro**: Sin mejora en N iteraciones consecutivas
+
 ### Parametros
 
 | Parametro | Valor | Descripcion |
@@ -307,6 +372,22 @@ Gap vs BKS: **0.00%** (alcanza la mejor solucion conocida en las 3 corridas).
 
 ---
 
+## Dashboard Streamlit
+
+El dashboard principal (`streamlit_app.py`) tiene 5 pestanas para analizar resultados pre-calculados:
+
+| Tab | Contenido |
+|-----|-----------|
+| **Mapa de Rutas** | Visualizacion interactiva Plotly de las rutas finales |
+| **Convergencia** | Graficas de convergencia de distancia y vehiculos |
+| **Comparacion** | Tabla comparativa vs BKS y resultados del paper original |
+| **Detalle** | Informacion detallada de cada ruta (clientes, demanda, tiempos, Gantt) |
+| **Analisis** | Estadisticas descriptivas, distribucion geografica, histogramas |
+
+Para ver el algoritmo ejecutandose en tiempo real, usa la demo: `streamlit run streamlit_demo.py`
+
+---
+
 ## Documento LaTeX
 
 El documento academico se encuentra en `LaTeX/MACS_VRPTW_Documento_Academico.tex`. Para compilarlo en **Overleaf**:
@@ -314,6 +395,21 @@ El documento academico se encuentra en `LaTeX/MACS_VRPTW_Documento_Academico.tex
 1. Sube el archivo `MACS_VRPTW_Documento_Academico.tex`
 2. Crea una carpeta `Figures/` en Overleaf y sube las 6 imagenes de la carpeta `Figures/` del repositorio
 3. Compila con pdfLaTeX
+
+---
+
+## Dependencias
+
+```
+numpy>=1.24.0
+matplotlib>=3.7.0
+streamlit>=1.28.0
+plotly>=5.15.0
+pandas>=2.0.0
+pyyaml>=6.0
+loguru>=0.7.0
+pytest>=7.4.0
+```
 
 ---
 

@@ -31,6 +31,8 @@ class MACS_VRPTW:
         max_iterations: int = 200,
         max_no_improvement: int = 50,
         local_search: LocalSearchStrategy | None = None,
+        on_improvement: Any = None,
+        on_iteration: Any = None,
     ) -> None:
         """Inicializa el controlador MACS-VRPTW."""
         self._instance = instance
@@ -41,6 +43,8 @@ class MACS_VRPTW:
         self._max_iterations = max_iterations
         self._max_no_improvement = max_no_improvement
         self._local_search = local_search
+        self._on_improvement = on_improvement
+        self._on_iteration = on_iteration
         self._history: list[dict[str, Any]] = []
 
     @property
@@ -114,6 +118,7 @@ class MACS_VRPTW:
                 improved = False
 
                 # Ejecutar ACS-VEI
+                self._notify_iteration(iteration, "ACS-VEI", start_time, psi_gb)
                 vei_result = acs_vei.run_cycle(psi_gb)
                 if vei_result is not None:
                     new_v = vei_result.num_vehicles()
@@ -132,6 +137,7 @@ class MACS_VRPTW:
                         break
 
                 # Ejecutar ACS-TIME
+                self._notify_iteration(iteration, "ACS-TIME", start_time, psi_gb)
                 time_result = acs_time.run_cycle(psi_gb)
                 if time_result is not None:
                     new_dist = time_result.total_distance(self._instance)
@@ -179,7 +185,7 @@ class MACS_VRPTW:
         self, iteration: int, solution: Solution, start_time: float, event: str
     ) -> None:
         """Registra una mejora en el historial."""
-        self._history.append({
+        entry = {
             "iteration": iteration,
             "num_vehicles": solution.num_vehicles(),
             "total_distance": round(
@@ -187,4 +193,24 @@ class MACS_VRPTW:
             ),
             "elapsed_time": round(time.time() - start_time, 2),
             "event": event,
-        })
+        }
+        self._history.append(entry)
+        if self._on_improvement is not None:
+            self._on_improvement(solution, entry)
+
+    def _notify_iteration(
+        self, iteration: int, phase: str, start_time: float, solution: Solution
+    ) -> None:
+        """Notifica el progreso de cada iteración."""
+        if self._on_iteration is not None:
+            info = {
+                "iteration": iteration,
+                "max_iterations": self._max_iterations,
+                "phase": phase,
+                "elapsed_time": round(time.time() - start_time, 2),
+                "num_vehicles": solution.num_vehicles(),
+                "total_distance": round(
+                    solution.total_distance(self._instance), 2
+                ),
+            }
+            self._on_iteration(info)

@@ -1,7 +1,7 @@
 {
   "instance": "data/c208.txt",
   "num_runs": 3,
-  "timestamp": "2026-03-11T17:06:38.698880",
+  "timestamp": "2026-03-11T19:43:45.296389",
   "results": [
     {
       "run_id": 1,
@@ -9,7 +9,7 @@
       "vehicles": 3,
       "distance": 588.32,
       "feasible": true,
-      "elapsed": 377.93
+      "elapsed": 7204.44
     },
     {
       "run_id": 2,
@@ -17,7 +17,7 @@
       "vehicles": 3,
       "distance": 588.32,
       "feasible": true,
-      "elapsed": 382.5
+      "elapsed": 7387.09
     },
     {
       "run_id": 3,
@@ -25,7 +25,7 @@
       "vehicles": 3,
       "distance": 588.32,
       "feasible": true,
-      "elapsed": 400.68
+      "elapsed": 7374.94
     }
   ],
   "best": {
